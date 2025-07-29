@@ -3,8 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Indicore AI - Multilingual Chatbot (Enhanced with Indian Speech)</title>
+    <title>Indicore AI - Multilingual Chatbot</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --primary-gradient-start: #7c4dff; /* Deeper, richer purple */
+            --primary-gradient-end: #5b3ac2;   /* Complementary dark purple */
+            --primary-color: #7c4dff;
+            --accent-color: #5b3ac2;
+            --background-light: #f8f9fa; /* Slightly lighter background */
+            --background-card: #ffffff;
+            --text-dark: #212529;
+            --text-medium: #6c757d;
+            --border-light: #e9ecef; /* Softer border */
+            --shadow-light: rgba(0, 0, 0, 0.05);
+            --shadow-medium: rgba(0, 0, 0, 0.12);
+            --shadow-strong: rgba(0, 0, 0, 0.2);
+            --success-color: #28a745;
+            --error-color: #dc3545;
+
+            /* RGB values for dynamic shadows */
+            --primary-color-rgb: 124, 77, 255;
+            --error-color-rgb: 220, 53, 69;
+            --success-color-rgb: 40, 167, 69;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -12,62 +35,83 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, var(--primary-gradient-start) 0%, var(--primary-gradient-end) 100%);
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
             padding: 20px;
+            color: var(--text-dark);
+            overflow: hidden; /* Prevent body scroll if content overflows */
         }
 
         .chat-container {
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+            background: var(--background-card);
+            border-radius: 28px; /* Slightly larger border-radius */
+            box-shadow: 0 20px 50px var(--shadow-strong); /* More prominent shadow */
             width: 100%;
-            max-width: 800px;
-            height: 600px;
+            max-width: 900px; /* Slightly wider */
+            height: 700px; /* Slightly taller */
             display: flex;
             flex-direction: column;
             overflow: hidden;
             position: relative;
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            transform: scale(0.98); /* Initial subtle scale */
+            animation: containerLoad 0.6s ease-out forwards;
+        }
+
+        @keyframes containerLoad {
+            from { opacity: 0; transform: scale(0.95) translateY(20px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
         }
 
         .header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, var(--primary-gradient-start) 0%, var(--primary-gradient-end) 100%);
             color: white;
-            padding: 20px;
+            padding: 30px; /* More padding */
             text-align: center;
             position: relative;
+            box-shadow: 0 4px 15px var(--shadow-medium); /* Deeper shadow */
         }
 
         .header h1 {
-            font-size: 24px;
-            margin-bottom: 5px;
+            font-size: 32px; /* Larger title */
+            margin-bottom: 8px;
+            font-weight: 700; /* Bolder title */
+            letter-spacing: 0.5px;
         }
 
         .header p {
-            font-size: 14px;
-            opacity: 0.9;
+            font-size: 16px;
+            opacity: 0.95;
+            font-weight: 300;
         }
 
         .settings-toggle {
             position: absolute;
-            top: 20px;
-            right: 20px;
-            background: rgba(255, 255, 255, 0.2);
+            top: 25px;
+            right: 25px;
+            background: rgba(255, 255, 255, 0.3); /* Slightly more opaque */
             border: none;
             color: white;
-            padding: 8px 12px;
-            border-radius: 8px;
+            padding: 12px 18px; /* More padding */
+            border-radius: 15px; /* Softer corners */
             cursor: pointer;
-            font-size: 14px;
-            transition: background 0.3s;
+            font-size: 16px;
+            font-weight: 500;
+            transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px; /* More space for icon */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
 
         .settings-toggle:hover {
-            background: rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.45);
+            transform: translateY(-3px); /* More pronounced lift */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
         }
 
         .settings-panel {
@@ -76,12 +120,13 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: white;
+            background: var(--background-card);
             z-index: 1000;
-            padding: 20px;
+            padding: 35px; /* More padding */
             overflow-y: auto;
             transform: translateX(100%);
-            transition: transform 0.3s ease;
+            transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55); /* Bouncy transition */
+            box-shadow: 0 0 40px var(--shadow-strong);
         }
 
         .settings-panel.active {
@@ -92,29 +137,39 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid #f0f0f0;
+            margin-bottom: 30px; /* More margin */
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border-light);
         }
 
         .settings-header h2 {
-            color: #333;
-            font-size: 20px;
+            color: var(--text-dark);
+            font-size: 26px; /* Larger title */
+            font-weight: 600;
         }
 
         .close-settings {
-            background: #ff4757;
+            background: var(--error-color);
             color: white;
             border: none;
-            padding: 8px 12px;
-            border-radius: 6px;
+            padding: 12px 20px;
+            border-radius: 10px; /* Softer corners */
             cursor: pointer;
-            font-size: 14px;
+            font-size: 16px;
+            font-weight: 500;
+            transition: background 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .close-settings:hover {
+            background: #e63946;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
 
         .settings-grid {
             display: grid;
-            gap: 20px;
+            gap: 30px; /* More space between groups */
         }
 
         .form-group {
@@ -124,204 +179,256 @@
 
         .form-group label {
             font-weight: 600;
-            margin-bottom: 8px;
-            color: #333;
-            font-size: 14px;
+            margin-bottom: 12px;
+            color: var(--text-dark);
+            font-size: 16px;
         }
 
-        .form-group input,
+        .form-group input[type="text"],
         .form-group select,
         .form-group textarea {
-            padding: 12px;
-            border: 2px solid #e1e5e9;
-            border-radius: 8px;
-            font-size: 14px;
-            transition: border-color 0.3s;
+            padding: 16px; /* More padding */
+            border: 1px solid var(--border-light);
+            border-radius: 12px; /* Softer corners */
+            font-size: 16px;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            color: var(--text-dark);
+            background-color: var(--background-light);
+            box-shadow: inset 0 1px 3px var(--shadow-light); /* Subtle inset shadow */
         }
 
-        .form-group input:focus,
+        .form-group input[type="text"]:focus,
         .form-group select:focus,
         .form-group textarea:focus {
             outline: none;
-            border-color: #667eea;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 4px rgba(var(--primary-color-rgb), 0.25), inset 0 1px 3px var(--shadow-medium); /* More prominent focus shadow */
         }
 
         .form-group textarea {
             resize: vertical;
-            min-height: 80px;
+            min-height: 120px; /* Taller textarea */
         }
 
-        .model-info {
-            font-size: 12px;
-            color: #666;
-            margin-top: 5px;
+        .model-info, .language-support-info {
+            font-size: 14px;
+            color: var(--text-medium);
+            margin-top: 10px;
             font-style: italic;
         }
 
         .api-notice {
             background: #d4edda;
             color: #155724;
-            padding: 10px;
-            border-radius: 8px;
-            margin-bottom: 15px;
-            font-size: 14px;
+            padding: 15px; /* More padding */
+            border-radius: 12px; /* Softer corners */
+            margin-bottom: 25px;
+            font-size: 16px;
             text-align: center;
             border: 1px solid #c3e6cb;
+            font-weight: 500;
         }
 
         .messages {
             flex: 1;
-            padding: 20px;
+            padding: 30px; /* More padding */
             overflow-y: auto;
-            background: #f8f9fa;
+            background: var(--background-light);
+            display: flex;
+            flex-direction: column;
+            gap: 20px; /* More space between messages */
+        }
+
+        .messages::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .messages::-webkit-scrollbar-track {
+            background: var(--border-light);
+            border-radius: 10px;
+        }
+
+        .messages::-webkit-scrollbar-thumb {
+            background: var(--primary-color);
+            border-radius: 10px;
+            transition: background 0.3s ease;
+        }
+
+        .messages::-webkit-scrollbar-thumb:hover {
+            background: var(--accent-color);
         }
 
         .message {
-            margin-bottom: 15px;
             display: flex;
             align-items: flex-start;
-            animation: fadeIn 0.3s ease;
+            animation: fadeIn 0.5s ease-out forwards; /* Slower, smoother fadeIn */
+            max-width: 85%; /* Slightly narrower message bubbles */
+            transform: translateX(0); /* Ensure initial transform is zero */
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
+            from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
         .message.user {
             justify-content: flex-end;
+            margin-left: auto;
         }
 
         .message-content {
-            max-width: 70%;
-            padding: 12px 16px;
-            border-radius: 18px;
-            font-size: 14px;
-            line-height: 1.4;
+            padding: 16px 22px; /* More padding */
+            border-radius: 25px; /* More rounded bubbles */
+            font-size: 16px;
+            line-height: 1.6;
             white-space: pre-wrap;
+            word-break: break-word;
+            box-shadow: 0 5px 15px var(--shadow-light); /* Softer, deeper shadow */
+            transition: transform 0.2s ease;
         }
 
         .message.user .message-content {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, var(--primary-gradient-start) 0%, var(--primary-gradient-end) 100%);
             color: white;
-            border-bottom-right-radius: 4px;
+            border-bottom-right-radius: 10px; /* Rounded corners for aesthetic */
         }
 
         .message.assistant .message-content {
-            background: white;
-            color: #333;
-            border: 1px solid #e1e5e9;
-            border-bottom-left-radius: 4px;
+            background: var(--background-card);
+            color: var(--text-dark);
+            border: 1px solid var(--border-light);
+            border-bottom-left-radius: 10px; /* Rounded corners */
         }
 
         .input-container {
-            padding: 20px;
-            background: white;
-            border-top: 1px solid #e1e5e9;
+            padding: 25px 30px; /* More padding */
+            background: var(--background-card);
+            border-top: 1px solid var(--border-light);
             display: flex;
-            gap: 10px;
+            gap: 15px; /* More space between elements */
+            align-items: center;
+            box-shadow: 0 -5px 15px var(--shadow-light); /* Subtle top shadow */
         }
 
         .message-input {
             flex: 1;
-            padding: 12px 16px;
-            border: 2px solid #e1e5e9;
-            border-radius: 25px;
-            font-size: 14px;
+            padding: 16px 22px; /* More padding */
+            border: 1px solid var(--border-light);
+            border-radius: 35px; /* More rounded */
+            font-size: 17px;
             outline: none;
-            transition: border-color 0.3s;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            background-color: var(--background-light);
+            box-shadow: inset 0 1px 3px var(--shadow-light);
         }
 
         .message-input:focus {
-            border-color: #667eea;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 4px rgba(var(--primary-color-rgb), 0.25), inset 0 1px 3px var(--shadow-medium);
         }
 
         .send-button {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, var(--primary-gradient-start) 0%, var(--primary-gradient-end) 100%);
             color: white;
             border: none;
-            padding: 12px 20px;
-            border-radius: 25px;
+            padding: 16px 30px; /* More padding */
+            border-radius: 35px; /* More rounded, pill-like */
             cursor: pointer;
-            font-size: 14px;
-            transition: transform 0.2s;
+            font-size: 17px;
+            font-weight: 600;
+            transition: transform 0.2s ease, box-shadow 0.3s ease;
+            box-shadow: 0 6px 20px rgba(var(--primary-color-rgb), 0.35); /* Deeper shadow */
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .send-button:hover {
-            transform: scale(1.05);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(var(--primary-color-rgb), 0.5);
         }
 
         .send-button:disabled {
             opacity: 0.6;
             cursor: not-allowed;
             transform: none;
+            box-shadow: none;
         }
 
         .mic-button {
-            background: #f8f9fa;
-            color: #333;
-            border: 2px solid #e1e5e9;
-            border-radius: 25px;
-            padding: 12px 18px;
+            background: var(--background-light);
+            color: var(--text-dark);
+            border: 1px solid var(--border-light);
+            border-radius: 50%;
+            padding: 16px; /* Increased padding */
             cursor: pointer;
-            font-size: 16px;
-            transition: all 0.2s;
+            font-size: 22px; /* Larger icon */
+            transition: all 0.2s ease;
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 48px;
-            height: 48px;
+            width: 58px; /* Larger button */
+            height: 58px;
+            box-shadow: 0 3px 8px var(--shadow-light);
         }
 
         .mic-button:hover {
-            background: #e9ecef;
+            background: #eef2f5;
+            color: var(--primary-color);
+            border-color: var(--primary-color);
+            box-shadow: 0 5px 12px var(--shadow-medium);
         }
 
         .mic-button.recording {
-            background: #ff4757;
+            background: var(--error-color);
             color: white;
-            animation: pulse 1s infinite;
+            border-color: var(--error-color);
+            animation: pulse 1.2s infinite cubic-bezier(0.68, -0.55, 0.265, 1.55); /* Bouncier pulse */
         }
 
         @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-            100% { transform: scale(1); }
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(var(--error-color-rgb), 0.6); }
+            50% { transform: scale(1.1); box-shadow: 0 0 0 15px rgba(var(--error-color-rgb), 0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(var(--error-color-rgb), 0); }
         }
 
         .stop-speech-button {
             position: fixed;
             top: 50%;
-            right: 20px;
+            right: 30px; /* Slightly more to the right */
             transform: translateY(-50%);
-            background: #ff4757;
+            background: var(--error-color);
             color: white;
             border: none;
-            padding: 15px 20px;
-            border-radius: 50px;
+            padding: 18px 25px; /* More padding */
+            border-radius: 45px; /* More rounded */
             cursor: pointer;
-            font-size: 16px;
-            font-weight: bold;
-            box-shadow: 0 4px 15px rgba(255, 71, 87, 0.4);
+            font-size: 18px;
+            font-weight: 600;
+            box-shadow: 0 8px 25px rgba(var(--error-color-rgb), 0.45); /* Deeper shadow */
             z-index: 1500;
             display: none;
-            animation: bounceIn 0.3s ease;
+            animation: bounceIn 0.5s ease-out forwards;
+            transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+            align-items: center;
+            gap: 10px;
         }
 
         .stop-speech-button:hover {
-            background: #e63946;
-            transform: translateY(-50%) scale(1.05);
+            background: #e04a5a;
+            transform: translateY(-50%) scale(1.05); /* More pronounced lift */
+            box-shadow: 0 10px 30px rgba(var(--error-color-rgb), 0.6);
         }
 
         .stop-speech-button.show {
-            display: block;
+            display: flex;
         }
 
         @keyframes bounceIn {
-            0% { transform: translateY(-50%) scale(0.3); opacity: 0; }
-            50% { transform: translateY(-50%) scale(1.05); }
-            70% { transform: translateY(-50%) scale(0.9); }
-            100% { transform: translateY(-50%) scale(1); opacity: 1; }
+            0% { transform: translateY(-50%) scale(0.6); opacity: 0; }
+            60% { transform: translateY(-50%) scale(1.1); opacity: 1; }
+            80% { transform: translateY(-50%) scale(0.97); }
+            100% { transform: translateY(-50%) scale(1); }
         }
 
         .voice-dialog {
@@ -331,96 +438,150 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(0, 0, 0, 0.5);
+            background: rgba(0, 0, 0, 0.7); /* Darker overlay */
             z-index: 2000;
             align-items: center;
             justify-content: center;
+            backdrop-filter: blur(8px); /* More blur */
         }
 
         .voice-dialog-content {
-            background: white;
-            padding: 20px;
-            border-radius: 12px;
+            background: var(--background-card);
+            padding: 35px; /* More padding */
+            border-radius: 20px; /* More rounded */
             width: 90%;
-            max-width: 400px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            max-width: 500px; /* Wider dialog */
+            box-shadow: 0 15px 40px var(--shadow-strong);
             position: relative;
+            animation: slideInUp 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        @keyframes slideInUp {
+            from { transform: translateY(80px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
         }
 
         .voice-dialog-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 15px;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .voice-dialog-header h3 {
+            font-size: 24px;
+            color: var(--text-dark);
+            font-weight: 600;
         }
 
         .close-dialog {
             background: none;
             border: none;
-            font-size: 24px;
+            font-size: 30px; /* Larger icon */
             cursor: pointer;
-            color: #666;
+            color: var(--text-medium);
+            transition: color 0.2s ease;
+        }
+
+        .close-dialog:hover {
+            color: var(--error-color);
         }
 
         #voiceStatus {
-            margin-bottom: 15px;
-            font-size: 14px;
-            color: #666;
+            margin-bottom: 20px;
+            font-size: 16px;
+            color: var(--text-medium);
             text-align: center;
+            font-weight: 500;
         }
 
         #transcription {
-            min-height: 60px;
-            border: 1px solid #e1e5e9;
-            border-radius: 8px;
-            padding: 10px;
-            margin-bottom: 15px;
-            background: #f8f9fa;
+            min-height: 100px; /* Taller transcription area */
+            border: 1px solid var(--border-light);
+            border-radius: 12px;
+            padding: 18px; /* More padding */
+            margin-bottom: 25px;
+            background: var(--background-light);
             font-style: italic;
-            color: #333;
+            color: var(--text-dark);
+            font-size: 16px;
+            line-height: 1.6;
+            word-break: break-word;
+            box-shadow: inset 0 1px 3px var(--shadow-light);
         }
 
         .voice-actions {
             display: flex;
-            gap: 10px;
+            gap: 15px;
             justify-content: center;
         }
 
         .voice-actions button {
-            padding: 8px 16px;
+            padding: 14px 22px; /* More padding */
             border: none;
-            border-radius: 6px;
+            border-radius: 10px;
             cursor: pointer;
-            font-size: 14px;
-            transition: background 0.2s;
+            font-size: 16px;
+            font-weight: 600;
+            transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
         }
 
         .voice-actions button:disabled {
             opacity: 0.6;
             cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
         }
 
         #startListening {
-            background: #28a745;
+            background: var(--success-color);
             color: white;
+        }
+        #startListening:hover:enabled {
+            background: #218838;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 10px rgba(var(--success-color-rgb), 0.3);
         }
 
         #stopListening {
-            background: #dc3545;
+            background: var(--error-color);
             color: white;
+        }
+        #stopListening:hover:enabled {
+            background: #c82333;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 10px rgba(var(--error-color-rgb), 0.3);
         }
 
         #sendVoiceMessage {
-            background: #667eea;
+            background: var(--primary-color);
             color: white;
+        }
+        #sendVoiceMessage:hover:enabled {
+            background: var(--accent-color);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 10px rgba(var(--primary-color-rgb), 0.3);
         }
 
         .loading {
             display: none;
             text-align: center;
-            padding: 10px;
-            color: #666;
+            padding: 18px; /* More padding */
+            color: var(--text-medium);
             font-style: italic;
+            font-size: 16px;
+            background: var(--background-light);
+            border-top: 1px solid var(--border-light);
+            animation: pulseText 1.5s infinite ease-in-out;
+        }
+
+        @keyframes pulseText {
+            0% { opacity: 0.7; }
+            50% { opacity: 1; }
+            100% { opacity: 0.7; }
         }
 
         .loading.active {
@@ -428,29 +589,149 @@
         }
 
         .language-support-info {
-            font-size: 11px;
-            color: #888;
-            margin-top: 5px;
+            font-size: 13px; /* Slightly smaller for subtle info */
+            color: var(--text-medium);
+            margin-top: 10px;
             font-style: italic;
         }
 
-        @media (max-width: 600px) {
+
+        @media (max-width: 768px) {
+            body {
+                padding: 0; /* Remove padding on small screens */
+                overflow-y: auto; /* Allow scrolling on body if needed */
+            }
             .chat-container {
                 height: 100vh;
                 border-radius: 0;
+                box-shadow: none;
+                transform: scale(1); /* No initial scale on mobile */
+                animation: none; /* No animation on mobile for faster load */
             }
             
+            .header {
+                padding: 25px;
+            }
             .header h1 {
+                font-size: 28px;
+            }
+            .header p {
+                font-size: 14px;
+            }
+            .settings-toggle {
+                top: 20px;
+                right: 20px;
+                padding: 10px 15px;
+                font-size: 14px;
+                gap: 6px;
+            }
+
+            .settings-panel {
+                padding: 25px;
+                transition: transform 0.3s ease; /* Faster transition on mobile */
+            }
+            .settings-header h2 {
+                font-size: 22px;
+            }
+            .close-settings {
+                padding: 10px 15px;
+                font-size: 14px;
+            }
+
+            .messages {
+                padding: 20px;
+                gap: 15px;
+            }
+            .message-content {
+                max-width: 90%; /* Expand messages slightly on mobile */
+                font-size: 15px;
+                padding: 14px 20px;
+            }
+
+            .input-container {
+                padding: 20px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            .message-input {
+                font-size: 16px;
+                padding: 14px 20px;
+                width: 100%; /* Take full width */
+            }
+            .send-button, .mic-button {
+                width: auto; /* Allow auto width for buttons */
+                flex-grow: 1; /* Allow buttons to grow */
+                padding: 14px 22px;
+                font-size: 16px;
+            }
+            .mic-button {
+                width: 52px;
+                height: 52px;
                 font-size: 20px;
             }
-            
-            .message-content {
-                max-width: 85%;
+            .send-button {
+                flex-basis: calc(60% - 10px); /* Adjust width for send button */
+            }
+
+
+            .voice-dialog-content {
+                padding: 30px;
+            }
+            .voice-dialog-header h3 {
+                font-size: 22px;
+            }
+            .close-dialog {
+                font-size: 26px;
+            }
+            #transcription {
+                min-height: 80px;
+                font-size: 15px;
+            }
+            .voice-actions button {
+                padding: 12px 20px;
+                font-size: 15px;
             }
 
             .stop-speech-button {
-                right: 10px;
-                padding: 12px 16px;
+                right: 20px;
+                padding: 14px 18px;
+                font-size: 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header h1 {
+                font-size: 24px;
+            }
+            .settings-toggle {
+                font-size: 12px;
+                padding: 6px 10px;
+            }
+            .message-input {
+                font-size: 14px;
+                padding: 12px 18px;
+            }
+            .send-button, .mic-button {
+                font-size: 14px;
+                padding: 12px 18px;
+                width: 100%; /* Stack buttons on very small screens */
+            }
+            .mic-button {
+                width: 45px;
+                height: 45px;
+                padding: 10px;
+            }
+            .stop-speech-button {
+                padding: 10px 14px;
+                font-size: 13px;
+                gap: 5px;
+            }
+            .voice-actions button {
+                font-size: 13px;
+                padding: 10px 15px;
+            }
+            #transcription {
+                min-height: 60px;
                 font-size: 14px;
             }
         }
@@ -470,9 +751,6 @@
                 <button class="close-settings" onclick="toggleSettings()">Close</button>
             </div>
             
-            <div class="api-notice">
-                ✅ API Keys are configured and ready to use!
-            </div>
             
             <div class="settings-grid">
                 <div class="form-group">
@@ -518,7 +796,6 @@
             </div>
         </div>
 
-        <!-- Voice Dialog -->
         <div id="voiceDialog" class="voice-dialog">
             <div class="voice-dialog-content">
                 <div class="voice-dialog-header">
@@ -535,14 +812,12 @@
             </div>
         </div>
 
-        <!-- Stop Speech Button -->
         <button class="stop-speech-button" id="stopSpeechButton">
             🔇 Stop Speech
         </button>
 
         <div class="messages" id="messages">
-            <!-- Messages will be added here -->
-        </div>
+            </div>
 
         <div class="loading" id="loading">
             🤖 AI is thinking...
@@ -555,26 +830,26 @@
         </div>
     </div>
 
-    <!-- Azure Speech SDK -->
     <script src="https://aka.ms/csspeech/jsbrowserpackageraw"></script>
 
     <script>
-        // Hardcoded API Configuration
+        // --- CRITICAL: REPLACE WITH YOUR ACTUAL KEYS AND REGION ---
         const API_CONFIG = {
             perplexity: {
-                key: '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'
+                key: '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' // Replace with your Perplexity API Key
             },
             azure: {
-                key: 'By9Rp2NRPVfgeznHmDftjPs8LxZYksBGUDQljb5tT2p3oBD5srbxJQQJ99BGACGhslBXJ3w3AAAYACOGTvgC',
-                region: 'centralindia'
+                key: 'By9Rp2NRPVfgeznHmDftjPs8LxZYksBGUDQljb5tT2p3oBD5srbxJQQJ99BGACGhslBXJ3w3AAAYACOGTvgC', // Replace with your Azure Speech Service Key
+                region: 'centralindia' // Ensure this matches your Azure Speech Service resource region
             }
         };
+        // --- END CRITICAL SECTION ---
 
         // Enhanced translations object with Gujarati support
         const translations = {
             en: {
                 welcome: "👋 Welcome! I'm Indicore AI, your Multilingual AI assistant.",
-                settings: "⚙️ Settings",
+                settings: "Settings",
                 model: "AI Model",
                 systemPrompt: "System Prompt",
                 inputPlaceholder: "Type your message here...",
@@ -598,12 +873,11 @@
             },
             hi: {
                 welcome: "👋 स्वागत है! मैं Indicore AI, आपका बहुभाषी AI सहायक हूँ",
-                settings: "⚙️ सेटिंग्स",
+                settings: "सेटिंग्स",
                 model: "AI मॉडल",
                 systemPrompt: "सिस्टम संकेत",
                 inputPlaceholder: "अपना संदेश यहाँ टाइप करें...",
                 send: "भेजें",
-                errorNoMessage: "कृपया एक संदेश दर्ज करें",
                 powered: "इंडिक भाषाओं के साथ संचालित",
                 language: "भाषा",
                 close: "बंद करें",
@@ -618,16 +892,16 @@
                 voiceStatusReady: "भेजने के लिए तैयार। जारी रखने के लिए 'भेजें' पर क्लिक करें।",
                 voiceStatusError: "त्रुटि हुई। कृपया पुनः प्रयास करें।",
                 transcriptionPlaceholder: "आपका भाषण यहाँ दिखाई देगा...",
-                stopSpeech: "🔇 भाषण बंद करें"
+                stopSpeech: "🔇 भाषण बंद करें",
+                errorNoMessage: "कृपया एक संदेश दर्ज करें"
             },
             mr: {
                 welcome: "👋 स्वागत आहे! मी Indicore AI, तुमचा बहुभाषी AI सहाय्यक आहे",
-                settings: "⚙️ सेटिंग्ज",
+                settings: " सेटिंग्ज",
                 model: "AI मॉडेल",
                 systemPrompt: "सिस्टम सूचना",
                 inputPlaceholder: "तुमचा संदेश येथे टाइप करा...",
                 send: "पाठवा",
-                errorNoMessage: "कृपया एक संदेश प्रविष्ट करा",
                 powered: "इंडिक भाषांमध्ये सह चालवलेले",
                 language: "भाषा",
                 close: "बंद करा",
@@ -642,16 +916,16 @@
                 voiceStatusReady: "पाठवण्यासाठी तयार। सुरू ठेवण्यासाठी 'पाठवा' वर क्लिक करा।",
                 voiceStatusError: "त्रुटी झाली. कृपया पुन्हा प्रयत्न करा।",
                 transcriptionPlaceholder: "तुमचे भाषण येथे दिसेल...",
-                stopSpeech: "🔇 भाषण थांबवा"
+                stopSpeech: "🔇 भाषण थांबवा",
+                errorNoMessage: "कृपया एक संदेश प्रविष्ट करा"
             },
             ta: {
                 welcome: "👋 வரவேற்கிறேன்! நான் Indicore AI, உங்கள் பல்மொழி AI உதவியாளர்",
-                settings: "⚙️ அமைப்புகள்",
+                settings: " அமைப்புகள்",
                 model: "AI மாதிரி",
                 systemPrompt: "அமைப்பு குறிப்பு",
                 inputPlaceholder: "உங்கள் செய்தியை இங்கே தட்டச்சு செய்யவும்...",
                 send: "அனுப்பு",
-                errorNoMessage: "தயவுசெய்து ஒரு செய்தியை உள்ளிடவும்",
                 powered: "இந்திய மொழிகள் உடன் இயக்கப்படுகிறது",
                 language: "மொழி",
                 close: "மூடு",
@@ -666,16 +940,16 @@
                 voiceStatusReady: "அனுப்ப தயார். தொடர 'அனுப்பு' என்பதைக் கிளிக் செய்யவும்।",
                 voiceStatusError: "பிழை ஏற்பட்டது. தயவுசெய்து மீண்டும் முயற்சிக்கவும்।",
                 transcriptionPlaceholder: "உங்கள் பேச்சு இங்கே தோன்றும்...",
-                stopSpeech: "🔇 பேச்சை நிறுத்து"
+                stopSpeech: "🔇 பேச்சை நிறுத்து",
+                errorNoMessage: "தயவுசெய்து ஒரு செய்தியை உள்ளிடவும்"
             },
             bn: {
                 welcome: "👋 স্বাগতম! আমি Indicore AI, আপনার বহুভাষিক AI সহকারী",
-                settings: "⚙️ সেটিংস",
+                settings: "সেটিংস",
                 model: "AI মডেল",
                 systemPrompt: "সিস্টেম প্রম্পট",
                 inputPlaceholder: "এখানে আপনার বার্তা টাইপ করুন...",
                 send: "পাঠান",
-                errorNoMessage: "অনুগ্রহ করে একটি বার্তা লিখুন",
                 powered: "ইন্ডিক ভাষা দিয়ে চালিত",
                 language: "ভাষা",
                 close: "বন্ধ",
@@ -690,16 +964,16 @@
                 voiceStatusReady: "পাঠানোর জন্য প্রস্তুত। চালিয়ে যেতে 'পাঠান' এ ক্লিক করুন।",
                 voiceStatusError: "ত্রুটি ঘটেছে। অনুগ্রহ করে আবার চেষ্টা করুন।",
                 transcriptionPlaceholder: "আপনার বক্তৃতা এখানে প্রদর্শিত হবে...",
-                stopSpeech: "🔇 বক্তৃতা বন্ধ করুন"
+                stopSpeech: "🔇 বক্তৃতা বন্ধ করুন",
+                errorNoMessage: "অনুগ্রহ করে একটি বার্তা লিখুন"
             },
             pa: {
                 welcome: "👋 ਜੀ ਆਇਆਂ ਨੂੰ! ਮੈਂ Indicore AI, ਤੁਹਾਡਾ ਬਹੁ-ਭਾਸ਼ੀ AI ਸਹਾਇਕ ਹਾਂ",
-                settings: "⚙️ ਸੈਟਿੰਗਾਂ",
+                settings: " ਸੈਟਿੰਗਾਂ",
                 model: "AI ਮਾਡਲ",
                 systemPrompt: "ਸਿਸਟਮ ਪ੍ਰੋਮਪਟ",
                 inputPlaceholder: "ਆਪਣਾ ਸੁਨੇਹਾ ਇੱਥੇ ਲਿਖੋ...",
                 send: "ਭੇਜੋ",
-                errorNoMessage: "ਕਿਰਪਾ ਕਰਕੇ ਇੱਕ ਸੁਨੇਹਾ ਦਰਜ ਕਰੋ",
                 powered: "ਇੰਡਿਕ ਭਾਸ਼ਾਵਾਂ ਨਾਲ ਸੰਚਾਲਿਤ",
                 language: "ਭਾਸ਼ਾ",
                 close: "ਬੰਦ ਕਰੋ",
@@ -714,16 +988,16 @@
                 voiceStatusReady: "ਭੇਜਣ ਲਈ ਤਿਆਰ। ਜਾਰੀ ਰੱਖਣ ਲਈ 'ਭੇਜੋ' ਤੇ ਕਲਿੱਕ ਕਰੋ।",
                 voiceStatusError: "ਗਲਤੀ ਹੋਈ। ਕਿਰਪਾ ਕਰਕੇ ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੋ।",
                 transcriptionPlaceholder: "ਤੁਹਾਡਾ ਭਾਸ਼ਣ ਇੱਥੇ ਦਿਖਾਈ ਦੇਵੇਗਾ...",
-                stopSpeech: "🔇 ਬੋਲਣਾ ਬੰਦ ਕਰੋ"
+                stopSpeech: "🔇 ਬੋਲਣਾ ਬੰਦ ਕਰੋ",
+                errorNoMessage: "ਕਿਰਪਾ ਕਰਕੇ ਇੱਕ ਸੁਨੇਹਾ ਦਰਜ ਕਰੋ"
             },
             gu: {
                 welcome: "👋 સ્વાગત છે! હું Indicore AI, તમારો બહુભાષી AI સહાયક છું",
-                settings: "⚙️ સેટિંગ્સ",
+                settings: "સેટિંગ્સ",
                 model: "AI મોડેલ",
                 systemPrompt: "સિસ્ટમ પ્રોમ્પ્ટ",
                 inputPlaceholder: "તમારો સંદેશ અહીં લખો...",
                 send: "મોકલો",
-                errorNoMessage: "કૃપા કરીને એક સંદેશ દાખલ કરો",
                 powered: "ઇન્ડિક ભાષાઓ સાથે સંચાલિત",
                 language: "ભાષા",
                 close: "બંધ કરો",
@@ -738,11 +1012,12 @@
                 voiceStatusReady: "મોકલવા માટે તૈયાર। ચાલુ રાખવા માટે 'મોકલો' પર ક્લિક કરો।",
                 voiceStatusError: "ભૂલ થઈ. કૃપા કરીને ફરીથી પ્રયાસ કરો।",
                 transcriptionPlaceholder: "તમારું ભાષણ અહીં દેખાશે...",
-                stopSpeech: "🔇 ભાષણ બંધ કરો"
+                stopSpeech: "🔇 ભાષણ બંધ કરો",
+                errorNoMessage: "કૃપા કરીને એક સંદેશ દાખલ કરો"
             }
         };
 
-        // Enhanced Azure language mapping
+        // Enhanced Azure language mapping (for Speech Recognition AND Speech Synthesis)
         const azureLanguageMap = {
             'en': 'en-IN',
             'hi': 'hi-IN',
@@ -753,15 +1028,18 @@
             'gu': 'gu-IN'
         };
 
-        // Enhanced speech synthesis mapping with fallbacks
-        const synthLangMap = {
-            'en': ['en-US', 'en-GB', 'en-AU', 'en'],
-            'hi': ['hi-IN', 'hi', 'en-IN', 'en-US'],
-            'mr': ['mr-IN', 'mr', 'hi-IN', 'en-IN', 'en-US'],
-            'ta': ['ta-IN', 'ta-LK', 'ta', 'hi-IN', 'en-IN', 'en-US'],
-            'bn': ['bn-IN', 'bn-BD', 'bn', 'hi-IN', 'en-IN', 'en-US'],
-            'pa': ['pa-IN', 'pa-PK', 'pa-Guru-IN', 'pa', 'hi-IN', 'en-IN', 'en-US'],
-            'gu': ['gu-IN', 'gu', 'hi-IN', 'en-IN', 'en-US']
+        // Azure Speech Synthesis Voice Mapping
+        // These are common Azure Neural voices. VERIFY THESE ARE AVAILABLE IN YOUR AZURE REGION.
+        // If your test.html worked, these names should be valid for your region.
+        
+        const azureVoiceMap = {
+            'en': 'en-IN-NeerjaNeural', // English (India) - Female
+            'hi': 'hi-IN-MadhurNeural', // Hindi (India) - Male
+            'mr': 'mr-IN-AarohiNeural', // Marathi (India) - Female
+            'ta': 'ta-IN-PallaviNeural', // Tamil (India) - Male
+            'bn': 'bn-IN-TanishaaNeural', // Bengali (India) - Female
+            'pa': 'pa-IN-OjasNeural', // Punjabi (India) - Female
+            'gu': 'gu-IN-NiranjanNeural' // Gujarati (India) - Female
         };
 
         // Model descriptions
@@ -791,13 +1069,14 @@
         let azureRecognizer = null;
         let isListening = false;
         let finalTranscriptText = '';
-        let isSpeaking = false;
+        let isSpeaking = false; // Tracks if Azure TTS is currently speaking
+        let azureSynthesizer = null; // Azure Speech Synthesizer instance
 
         // Azure Speech Recognition class
         class AzureSpeechRecognizer {
             constructor() {
                 this.speechConfig = null;
-                this.recognizer = null;
+                this.recognizer = null; // Will store the SpeechSDK.SpeechRecognizer instance
                 this.isListening = false;
                 this.finalTranscript = '';
             }
@@ -818,6 +1097,7 @@
                     return true;
                 } catch (error) {
                     voiceStatus.textContent = `Configuration error: ${error.message}`;
+                    console.error("Speech Recognition Config Error:", error);
                     return false;
                 }
             }
@@ -839,6 +1119,8 @@
                     this.recognizer.recognized = (s, e) => {
                         if (e.result.reason === SpeechSDK.ResultReason.RecognizedSpeech) {
                             this.displayFinalResult(e.result.text);
+                        } else if (e.result.reason === SpeechSDK.ResultReason.NoMatch) {
+                            console.warn("Speech Recognition: No speech could be recognized.");
                         }
                     };
                     
@@ -847,7 +1129,7 @@
                     };
                     
                     this.recognizer.sessionStopped = (s, e) => {
-                        this.stopRecognition();
+                        this.stopRecognition(); // This will be called when session naturally ends
                     };
                     
                     this.recognizer.startContinuousRecognitionAsync(
@@ -861,39 +1143,57 @@
                         },
                         (error) => {
                             voiceStatus.textContent = `Failed to start: ${error}`;
+                            console.error("Speech Recognition Start Error:", error);
                             this.resetVoiceControls();
                         }
                     );
                     
                 } catch (error) {
                     voiceStatus.textContent = `Recognition error: ${error.message}`;
+                    console.error("Speech Recognition Runtime Error:", error);
                     this.resetVoiceControls();
                 }
             }
 
             stopRecognition() {
+                // IMPORTANT FIX: Only try to stop/close if recognizer object exists and is listening
                 if (this.recognizer && this.isListening) {
                     this.recognizer.stopContinuousRecognitionAsync(
                         () => {
                             this.isListening = false;
                             this.resetVoiceControls();
-                            this.recognizer.close();
-                            this.recognizer = null;
+                            // Close and nullify the recognizer instance *after* it has successfully stopped
+                            if (this.recognizer) { // Double check before closing
+                                this.recognizer.close();
+                                this.recognizer = null; // Set to null to prevent further attempts to close it
+                            }
                             
                             if (this.finalTranscript.trim()) {
                                 const lang = document.getElementById('languageSelect').value;
                                 voiceStatus.textContent = translations[lang].voiceStatusReady;
                                 sendVoiceMessage.disabled = false;
+                            } else {
+                                const lang = document.getElementById('languageSelect').value;
+                                voiceStatus.textContent = translations[lang].voiceStatusStart;
                             }
                         },
                         (error) => {
                             voiceStatus.textContent = `Stop error: ${error}`;
+                            console.error("Speech Recognition Stop Error:", error);
                             this.resetVoiceControls();
+                            // If stopping failed, ensure recognizer is still cleaned up if it was initialized
+                            if (this.recognizer) {
+                                this.recognizer.close();
+                                this.recognizer = null;
+                            }
                         }
                     );
                 } else {
+                    // If not currently listening or recognizer is already null, just reset controls
                     this.isListening = false;
                     this.resetVoiceControls();
+                    // Ensure recognizer is definitely null if we reach here without it being active
+                    this.recognizer = null;
                 }
             }
 
@@ -927,31 +1227,20 @@
                 
                 if (e.reason === SpeechSDK.CancellationReason.Error) {
                     errorMessage = `Error: ${e.errorDetails}`;
+                    console.error(`Speech Recognition Canceled Error: ${e.errorDetails}`);
                 } else if (e.reason === SpeechSDK.CancellationReason.EndOfStream) {
-                    errorMessage = 'End of stream reached';
+                    errorMessage = 'End of stream reached. No speech detected or timeout.';
+                    console.warn("Speech Recognition: End of stream or no speech detected.");
                 }
                 
                 voiceStatus.textContent = errorMessage;
-                this.stopRecognition();
+                // This will call stopRecognition, which now handles null checks
+                this.stopRecognition(); 
             }
         }
 
         // Initialize Azure Speech Recognizer
         const azureSpeechRecognizer = new AzureSpeechRecognizer();
-
-        // Enhanced voice loading function
-        function ensureVoicesLoaded() {
-            return new Promise((resolve) => {
-                const voices = window.speechSynthesis.getVoices();
-                if (voices.length > 0) {
-                    resolve(voices);
-                } else {
-                    window.speechSynthesis.onvoiceschanged = () => {
-                        resolve(window.speechSynthesis.getVoices());
-                    };
-                }
-            });
-        }
 
         function resetTranscription() {
             const lang = document.getElementById('languageSelect').value;
@@ -961,20 +1250,133 @@
             sendVoiceMessage.disabled = true;
         }
 
-        function stopSpeech() {
-            if (window.speechSynthesis.speaking) {
-                window.speechSynthesis.cancel();
-                isSpeaking = false;
-                stopSpeechButton.classList.remove('show');
-                console.log('Speech stopped by user');
+        // --- Azure Speech Synthesis (TTS) Implementation ---
+        function initializeAzureSynthesizer() {
+            if (azureSynthesizer) {
+                azureSynthesizer.close(); // Close existing synthesizer if open
+                azureSynthesizer = null;
+            }
+            try {
+                const speechConfig = SpeechSDK.SpeechConfig.fromSubscription(API_CONFIG.azure.key, API_CONFIG.azure.region);
+                speechConfig.setProfanity(SpeechSDK.ProfanityOption.Removed);
+                
+                azureSynthesizer = new SpeechSDK.SpeechSynthesizer(speechConfig);
+
+                azureSynthesizer.SynthesisStarted = () => {
+                    isSpeaking = true;
+                    stopSpeechButton.classList.add('show');
+                    console.log('Azure speech synthesis started.');
+                };
+
+                azureSynthesizer.SynthesisCompleted = () => {
+                    isSpeaking = false;
+                    stopSpeechButton.classList.remove('show');
+                    console.log('Azure speech synthesis completed.');
+                    if (azureSynthesizer) {
+                        azureSynthesizer.close();
+                        azureSynthesizer = null;
+                    }
+                };
+
+                azureSynthesizer.SynthesisCanceled = (s, e) => {
+                    isSpeaking = false;
+                    stopSpeechButton.classList.remove('show');
+                    console.error(`Azure speech synthesis canceled. Reason: ${e.reason}. Error details: ${e.errorDetails}. For more info: ${e.errorDetails}`);
+                    if (azureSynthesizer) {
+                        azureSynthesizer.close();
+                        azureSynthesizer = null;
+                    }
+                };
+                
+                azureSynthesizer.SynthesisError = (s, e) => {
+                    console.error(`Azure speech synthesis error event: ${e.errorDetails}`);
+                    isSpeaking = false;
+                    stopSpeechButton.classList.remove('show');
+                };
+
+            } catch (error) {
+                console.error("Error initializing Azure Speech Synthesizer:", error);
+                alert("Failed to initialize speech synthesis. Check Azure Speech SDK and API config.");
             }
         }
+
+        function speak(text, lang) {
+            if (isSpeaking) {
+                stopSpeech(); // Stop any ongoing speech before starting a new one
+            }
+
+            if (!SpeechSDK) {
+                console.error('Azure Speech SDK is not loaded. Cannot speak.');
+                return;
+            }
+
+            if (!azureSynthesizer) {
+                initializeAzureSynthesizer();
+            }
+
+            if (!azureSynthesizer) { // Check again if initialization failed
+                console.error('Azure Speech Synthesizer could not be initialized. Cannot speak.');
+                return;
+            }
+
+            const voiceName = azureVoiceMap[lang];
+            const azureLangCode = azureLanguageMap[lang] || 'en-IN';
+            
+            if (!voiceName) {
+                console.warn(`No specific Azure voice mapped for language '${lang}'. Falling back to 'en-IN-NeerjaNeural'.`);
+                // Fallback to a known working English voice if specific Indic voice is missing
+                voiceName = 'en-IN-NeerjaNeural'; 
+            }
+            
+            // Construct SSML for better control over voice and language
+            const ssml = `<speak version="1.0" xmlns="http://www.w3.org/2001/10/synthesis" xml:lang="${azureLangCode}">
+                            <voice name="${voiceName}">${text}</voice>
+                          </speak>`;
+
+            console.log("Attempting Azure TTS with SSML:", ssml); // Log the SSML being sent
+
+            azureSynthesizer.speakSsmlAsync(
+                ssml,
+                result => {
+                    if (result.reason === SpeechSDK.ResultReason.SynthesizingAudioCompleted) {
+                        console.log("Synthesis finished successfully for: " + text);
+                    } else if (result.reason === SpeechSDK.ResultReason.Canceled) {
+                        console.error("Synthesis canceled (result): " + result.errorDetails);
+                        isSpeaking = false;
+                        stopSpeechButton.classList.remove('show');
+                    } else {
+                        console.error("Synthesis failed with unexpected result reason. Result ID: " + result.resultId + "\n" +
+                            "Error reason: " + result.reason + "\n" +
+                            "Error details: " + result.errorDetails);
+                        isSpeaking = false;
+                        stopSpeechButton.classList.remove('show');
+                    }
+                },
+                error => {
+                    console.error("Critical error during Azure synthesis: " + error);
+                    isSpeaking = false;
+                    stopSpeechButton.classList.remove('show');
+                }
+            );
+        }
+
+        function stopSpeech() {
+            if (azureSynthesizer && isSpeaking) {
+                // Calling close will trigger SynthesisCanceled event.
+                azureSynthesizer.close();
+                azureSynthesizer = null;
+                isSpeaking = false;
+                stopSpeechButton.classList.remove('show');
+                console.log('Azure speech stopped by user (synthesizer closed).');
+            }
+        }
+        // --- End Azure Speech Synthesis (TTS) Implementation ---
 
         function updateInterface(lang) {
             const t = translations[lang];
             
             document.querySelector('.header p').textContent = t.powered;
-            document.querySelector('.settings-toggle').textContent = t.settings;
+            document.querySelector('.settings-toggle').innerHTML = `⚙️ ${t.settings}`;
             
             document.querySelector('.settings-header h2').textContent = t.settings;
             document.querySelector('.close-settings').textContent = t.close;
@@ -993,7 +1395,7 @@
             document.getElementById('stopListening').textContent = t.stopListening;
             document.getElementById('sendVoiceMessage').textContent = t.send;
 
-            document.getElementById('stopSpeechButton').textContent = t.stopSpeech;
+            document.getElementById('stopSpeechButton').innerHTML = `🔇 ${t.stopSpeech}`;
             
             updateWelcomeMessage(lang);
         }
@@ -1053,75 +1455,6 @@
             messagesContainer.scrollTop = messagesContainer.scrollHeight;
         }
 
-        // Enhanced speech synthesis function with better language support
-        function speak(text, lang) {
-            if (!window.speechSynthesis) {
-                console.warn('Speech synthesis is not supported in your browser.');
-                return;
-            }
-
-            window.speechSynthesis.cancel();
-
-            const utterance = new SpeechSynthesisUtterance(text);
-            
-            const availableLangs = synthLangMap[lang] || ['en-US'];
-            const voices = window.speechSynthesis.getVoices();
-            
-            let selectedVoice = null;
-            let selectedLang = availableLangs[0];
-            
-            for (const langCode of availableLangs) {
-                const matchingVoice = voices.find(voice => 
-                    voice.lang === langCode || 
-                    voice.lang.startsWith(langCode.split('-')[0])
-                );
-                
-                if (matchingVoice) {
-                    selectedVoice = matchingVoice;
-                    selectedLang = langCode;
-                    console.log(`Found voice for ${lang}: ${matchingVoice.name} (${matchingVoice.lang})`);
-                    break;
-                }
-            }
-            
-            utterance.lang = selectedLang;
-            utterance.rate = 0.9;
-            utterance.pitch = 1.0;
-            utterance.volume = 1.0;
-            
-            if (selectedVoice) {
-                utterance.voice = selectedVoice;
-            }
-
-            utterance.onstart = function() {
-                isSpeaking = true;
-                stopSpeechButton.classList.add('show');
-                console.log(`Speech started in ${utterance.lang} with voice: ${utterance.voice ? utterance.voice.name : 'default'}`);
-            };
-
-            utterance.onend = function() {
-                isSpeaking = false;
-                stopSpeechButton.classList.remove('show');
-                console.log('Speech ended');
-            };
-
-            utterance.onerror = function(event) {
-                console.error('Speech synthesis error:', event.error);
-                isSpeaking = false;
-                stopSpeechButton.classList.remove('show');
-                
-                if (utterance.lang !== 'en-US') {
-                    console.log('Retrying with English fallback...');
-                    const fallbackUtterance = new SpeechSynthesisUtterance(text);
-                    fallbackUtterance.lang = 'en-US';
-                    fallbackUtterance.rate = 0.9;
-                    window.speechSynthesis.speak(fallbackUtterance);
-                }
-            };
-
-            window.speechSynthesis.speak(utterance);
-        }
-
         // Perplexity API sendMessage function
         async function sendMessage() {
             const messageInput = document.getElementById('messageInput');
@@ -1141,14 +1474,18 @@
             const sendButton = document.getElementById('sendButton');
             loading.classList.add('active');
             sendButton.disabled = true;
+            micButton.disabled = true; // Disable mic during AI thinking
 
             try {
                 const model = document.getElementById('modelSelect').value;
                 let systemPrompt = document.getElementById('systemPrompt').value.trim();
                 
+                // Ensure the AI responds in the selected language
                 if (language !== 'en') {
-                    systemPrompt += ` Always respond in ${translations[language].languageName}.`;
+                    systemPrompt += ` Your response MUST be entirely in ${translations[language].languageName}. Do not use any other language. Ensure perfect grammar and natural flow in ${translations[language].languageName}.`; // Emphasized prompt
                 }
+
+                console.log(`Sending prompt to Perplexity in ${language} with system prompt: "${systemPrompt}" and user message: "${message}"`); // Added more context for Perplexity call
 
                 const response = await fetch('https://api.perplexity.ai/chat/completions', {
                     method: 'POST',
@@ -1184,28 +1521,35 @@
 
                 if (!response.ok) {
                     const errorData = await response.text();
-                    console.error('API Error:', response.status, errorData);
+                    console.error('API Error from Perplexity:', response.status, errorData);
                     throw new Error(`HTTP ${response.status}: ${errorData}`);
                 }
 
                 const data = await response.json();
-                console.log('API Response:', data);
                 
                 let aiResponse = '';
                 if (data.choices && data.choices[0] && data.choices[0].message) {
                     aiResponse = data.choices[0].message.content;
                 } else {
-                    throw new Error('Invalid response format from API');
+                    throw new Error('Invalid response format from Perplexity API');
                 }
+                
+                console.log('Perplexity AI Raw Response Content:', aiResponse); // CRITICAL: Log the actual content
+                console.log('Selected Language for TTS:', language); // Confirm the language for TTS
 
                 addMessage(aiResponse, false);
 
-                if (document.getElementById('enableSpeech').checked) {
-                    speak(aiResponse, language);
+                // Check if speech responses are enabled AND if the response has actual content
+                if (document.getElementById('enableSpeech').checked && aiResponse.trim().length > 0) {
+                    speak(aiResponse, language); // Use the Azure-based speak function
+                } else if (document.getElementById('enableSpeech').checked && aiResponse.trim().length === 0) {
+                    console.warn("Speech responses enabled, but AI returned empty response. Not speaking.");
+                } else {
+                    console.log("Speech responses not enabled or no content to speak.");
                 }
 
             } catch (error) {
-                console.error('Error:', error);
+                console.error('Error in sendMessage function:', error);
                 let errorMessage = `Error: ${error.message}`;
                 
                 if (error.message.includes('401')) {
@@ -1222,6 +1566,7 @@
             } finally {
                 loading.classList.remove('active');
                 sendButton.disabled = false;
+                micButton.disabled = false; // Re-enable mic
                 messageInput.focus();
             }
         }
@@ -1285,20 +1630,19 @@
             saveSettings();
         });
 
-        // Enhanced initialization
+        // Initialization
         document.addEventListener('DOMContentLoaded', async function() {
             loadSettings();
             
             // Check if Azure Speech SDK is loaded
             if (typeof SpeechSDK === 'undefined') {
                 console.error('Azure Speech SDK not loaded');
-                document.getElementById('voiceStatus').textContent = 'Azure Speech SDK not loaded. Voice input disabled.';
+                document.getElementById('voiceStatus').textContent = 'Azure Speech SDK not loaded. Voice input and output disabled.';
                 micButton.disabled = true;
+                document.getElementById('enableSpeech').disabled = true;
+            } else {
+                initializeAzureSynthesizer(); 
             }
-            
-            // Ensure voices are loaded for speech synthesis
-            await ensureVoicesLoaded();
-            console.log('Available voices:', window.speechSynthesis.getVoices().map(v => `${v.name} (${v.lang})`));
         });
     </script>
 </body>
