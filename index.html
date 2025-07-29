@@ -751,9 +751,6 @@
                 <button class="close-settings" onclick="toggleSettings()">Close</button>
             </div>
             
-            <div class="api-notice">
-                ✅ API Keys are configured and ready to use!
-            </div>
             
             <div class="settings-grid">
                 <div class="form-group">
@@ -836,22 +833,23 @@
     <script src="https://aka.ms/csspeech/jsbrowserpackageraw"></script>
 
     <script>
-        // Hardcoded API Configuration
+        // --- CRITICAL: REPLACE WITH YOUR ACTUAL KEYS AND REGION ---
         const API_CONFIG = {
             perplexity: {
-                key: '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'
+                key: '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' // Replace with your Perplexity API Key
             },
             azure: {
-                key: 'By9Rp2NRPVfgeznHmDftjPs8LxZYksBGUDQljb5tT2p3oBD5srbxJQQJ99BGACGhslBXJ3w3AAAYACOGTvgC',
-                region: 'centralindia'
+                key: 'By9Rp2NRPVfgeznHmDftjPs8LxZYksBGUDQljb5tT2p3oBD5srbxJQQJ99BGACGhslBXJ3w3AAAYACOGTvgC', // Replace with your Azure Speech Service Key
+                region: 'centralindia' // Ensure this matches your Azure Speech Service resource region
             }
         };
+        // --- END CRITICAL SECTION ---
 
         // Enhanced translations object with Gujarati support
         const translations = {
             en: {
                 welcome: "👋 Welcome! I'm Indicore AI, your Multilingual AI assistant.",
-                settings: " Settings",
+                settings: "Settings",
                 model: "AI Model",
                 systemPrompt: "System Prompt",
                 inputPlaceholder: "Type your message here...",
@@ -875,7 +873,7 @@
             },
             hi: {
                 welcome: "👋 स्वागत है! मैं Indicore AI, आपका बहुभाषी AI सहायक हूँ",
-                settings: "⚙️ सेटिंग्स",
+                settings: "सेटिंग्स",
                 model: "AI मॉडल",
                 systemPrompt: "सिस्टम संकेत",
                 inputPlaceholder: "अपना संदेश यहाँ टाइप करें...",
@@ -899,7 +897,7 @@
             },
             mr: {
                 welcome: "👋 स्वागत आहे! मी Indicore AI, तुमचा बहुभाषी AI सहाय्यक आहे",
-                settings: "⚙️ सेटिंग्ज",
+                settings: " सेटिंग्ज",
                 model: "AI मॉडेल",
                 systemPrompt: "सिस्टम सूचना",
                 inputPlaceholder: "तुमचा संदेश येथे टाइप करा...",
@@ -923,7 +921,7 @@
             },
             ta: {
                 welcome: "👋 வரவேற்கிறேன்! நான் Indicore AI, உங்கள் பல்மொழி AI உதவியாளர்",
-                settings: "⚙️ அமைப்புகள்",
+                settings: " அமைப்புகள்",
                 model: "AI மாதிரி",
                 systemPrompt: "அமைப்பு குறிப்பு",
                 inputPlaceholder: "உங்கள் செய்தியை இங்கே தட்டச்சு செய்யவும்...",
@@ -947,7 +945,7 @@
             },
             bn: {
                 welcome: "👋 স্বাগতম! আমি Indicore AI, আপনার বহুভাষিক AI সহকারী",
-                settings: "⚙️ সেটিংস",
+                settings: "সেটিংস",
                 model: "AI মডেল",
                 systemPrompt: "সিস্টেম প্রম্পট",
                 inputPlaceholder: "এখানে আপনার বার্তা টাইপ করুন...",
@@ -971,7 +969,7 @@
             },
             pa: {
                 welcome: "👋 ਜੀ ਆਇਆਂ ਨੂੰ! ਮੈਂ Indicore AI, ਤੁਹਾਡਾ ਬਹੁ-ਭਾਸ਼ੀ AI ਸਹਾਇਕ ਹਾਂ",
-                settings: "⚙️ ਸੈਟਿੰਗਾਂ",
+                settings: " ਸੈਟਿੰਗਾਂ",
                 model: "AI ਮਾਡਲ",
                 systemPrompt: "ਸਿਸਟਮ ਪ੍ਰੋਮਪਟ",
                 inputPlaceholder: "ਆਪਣਾ ਸੁਨੇਹਾ ਇੱਥੇ ਲਿਖੋ...",
@@ -995,7 +993,7 @@
             },
             gu: {
                 welcome: "👋 સ્વાગત છે! હું Indicore AI, તમારો બહુભાષી AI સહાયક છું",
-                settings: "⚙️ સેટિંગ્સ",
+                settings: "સેટિંગ્સ",
                 model: "AI મોડેલ",
                 systemPrompt: "સિસ્ટમ પ્રોમ્પ્ટ",
                 inputPlaceholder: "તમારો સંદેશ અહીં લખો...",
@@ -1031,17 +1029,17 @@
         };
 
         // Azure Speech Synthesis Voice Mapping
-        // These are common Azure Neural voices. You might want to explore more options
-        // in the Azure Speech Studio or documentation for specific regional voices.
+        // These are common Azure Neural voices. VERIFY THESE ARE AVAILABLE IN YOUR AZURE REGION.
+        // If your test.html worked, these names should be valid for your region.
+        
         const azureVoiceMap = {
-            'en': 'en-IN-NeerjaNeural', // Good Indian English voice
-            'hi': 'hi-IN-MadhurNeural', // Hindi Male
-            'mr': 'mr-IN-AarohiNeural', // Marathi Female
-            'ta': 'ta-IN-ValluvarNeural', // Tamil Male
-            'bn': 'bn-IN-BasantiNeural', // Bengali Female
-            'pa': 'pa-IN-PrabhjotNeural', // Punjabi Female
-            'gu': 'gu-IN-AnandiNeural' // Gujarati Female
-            // Fallback to English if an Indic voice isn't found for a language
+            'en': 'en-IN-NeerjaNeural', // English (India) - Female
+            'hi': 'hi-IN-MadhurNeural', // Hindi (India) - Male
+            'mr': 'mr-IN-AarohiNeural', // Marathi (India) - Female
+            'ta': 'ta-IN-PallaviNeural', // Tamil (India) - Male
+            'bn': 'bn-IN-TanishaaNeural', // Bengali (India) - Female
+            'pa': 'pa-IN-OjasNeural', // Punjabi (India) - Female
+            'gu': 'gu-IN-NiranjanNeural' // Gujarati (India) - Female
         };
 
         // Model descriptions
@@ -1078,7 +1076,7 @@
         class AzureSpeechRecognizer {
             constructor() {
                 this.speechConfig = null;
-                this.recognizer = null;
+                this.recognizer = null; // Will store the SpeechSDK.SpeechRecognizer instance
                 this.isListening = false;
                 this.finalTranscript = '';
             }
@@ -1099,6 +1097,7 @@
                     return true;
                 } catch (error) {
                     voiceStatus.textContent = `Configuration error: ${error.message}`;
+                    console.error("Speech Recognition Config Error:", error);
                     return false;
                 }
             }
@@ -1120,6 +1119,8 @@
                     this.recognizer.recognized = (s, e) => {
                         if (e.result.reason === SpeechSDK.ResultReason.RecognizedSpeech) {
                             this.displayFinalResult(e.result.text);
+                        } else if (e.result.reason === SpeechSDK.ResultReason.NoMatch) {
+                            console.warn("Speech Recognition: No speech could be recognized.");
                         }
                     };
                     
@@ -1128,7 +1129,7 @@
                     };
                     
                     this.recognizer.sessionStopped = (s, e) => {
-                        this.stopRecognition();
+                        this.stopRecognition(); // This will be called when session naturally ends
                     };
                     
                     this.recognizer.startContinuousRecognitionAsync(
@@ -1142,39 +1143,57 @@
                         },
                         (error) => {
                             voiceStatus.textContent = `Failed to start: ${error}`;
+                            console.error("Speech Recognition Start Error:", error);
                             this.resetVoiceControls();
                         }
                     );
                     
                 } catch (error) {
                     voiceStatus.textContent = `Recognition error: ${error.message}`;
+                    console.error("Speech Recognition Runtime Error:", error);
                     this.resetVoiceControls();
                 }
             }
 
             stopRecognition() {
+                // IMPORTANT FIX: Only try to stop/close if recognizer object exists and is listening
                 if (this.recognizer && this.isListening) {
                     this.recognizer.stopContinuousRecognitionAsync(
                         () => {
                             this.isListening = false;
                             this.resetVoiceControls();
-                            this.recognizer.close();
-                            this.recognizer = null;
+                            // Close and nullify the recognizer instance *after* it has successfully stopped
+                            if (this.recognizer) { // Double check before closing
+                                this.recognizer.close();
+                                this.recognizer = null; // Set to null to prevent further attempts to close it
+                            }
                             
                             if (this.finalTranscript.trim()) {
                                 const lang = document.getElementById('languageSelect').value;
                                 voiceStatus.textContent = translations[lang].voiceStatusReady;
                                 sendVoiceMessage.disabled = false;
+                            } else {
+                                const lang = document.getElementById('languageSelect').value;
+                                voiceStatus.textContent = translations[lang].voiceStatusStart;
                             }
                         },
                         (error) => {
                             voiceStatus.textContent = `Stop error: ${error}`;
+                            console.error("Speech Recognition Stop Error:", error);
                             this.resetVoiceControls();
+                            // If stopping failed, ensure recognizer is still cleaned up if it was initialized
+                            if (this.recognizer) {
+                                this.recognizer.close();
+                                this.recognizer = null;
+                            }
                         }
                     );
                 } else {
+                    // If not currently listening or recognizer is already null, just reset controls
                     this.isListening = false;
                     this.resetVoiceControls();
+                    // Ensure recognizer is definitely null if we reach here without it being active
+                    this.recognizer = null;
                 }
             }
 
@@ -1208,12 +1227,15 @@
                 
                 if (e.reason === SpeechSDK.CancellationReason.Error) {
                     errorMessage = `Error: ${e.errorDetails}`;
+                    console.error(`Speech Recognition Canceled Error: ${e.errorDetails}`);
                 } else if (e.reason === SpeechSDK.CancellationReason.EndOfStream) {
-                    errorMessage = 'End of stream reached';
+                    errorMessage = 'End of stream reached. No speech detected or timeout.';
+                    console.warn("Speech Recognition: End of stream or no speech detected.");
                 }
                 
                 voiceStatus.textContent = errorMessage;
-                this.stopRecognition();
+                // This will call stopRecognition, which now handles null checks
+                this.stopRecognition(); 
             }
         }
 
@@ -1236,8 +1258,7 @@
             }
             try {
                 const speechConfig = SpeechSDK.SpeechConfig.fromSubscription(API_CONFIG.azure.key, API_CONFIG.azure.region);
-                // Optional: set the speech synthesis output format
-                // speechConfig.speechSynthesisOutputFormat = SpeechSDK.SpeechSynthesisOutputFormat.Audio16Khz64KBitRateMonoMp3;
+                speechConfig.setProfanity(SpeechSDK.ProfanityOption.Removed);
                 
                 azureSynthesizer = new SpeechSDK.SpeechSynthesizer(speechConfig);
 
@@ -1251,7 +1272,6 @@
                     isSpeaking = false;
                     stopSpeechButton.classList.remove('show');
                     console.log('Azure speech synthesis completed.');
-                    // Close the synthesizer after synthesis is complete
                     if (azureSynthesizer) {
                         azureSynthesizer.close();
                         azureSynthesizer = null;
@@ -1261,12 +1281,17 @@
                 azureSynthesizer.SynthesisCanceled = (s, e) => {
                     isSpeaking = false;
                     stopSpeechButton.classList.remove('show');
-                    console.error(`Azure speech synthesis canceled. Reason: ${e.reason}. Error details: ${e.errorDetails}`);
-                    // Close the synthesizer on cancellation
+                    console.error(`Azure speech synthesis canceled. Reason: ${e.reason}. Error details: ${e.errorDetails}. For more info: ${e.errorDetails}`);
                     if (azureSynthesizer) {
                         azureSynthesizer.close();
                         azureSynthesizer = null;
                     }
+                };
+                
+                azureSynthesizer.SynthesisError = (s, e) => {
+                    console.error(`Azure speech synthesis error event: ${e.errorDetails}`);
+                    isSpeaking = false;
+                    stopSpeechButton.classList.remove('show');
                 };
 
             } catch (error) {
@@ -1294,20 +1319,33 @@
                 return;
             }
 
-            const voiceName = azureVoiceMap[lang] || azureVoiceMap['en']; // Use language-specific voice, fallback to English
+            const voiceName = azureVoiceMap[lang];
+            const azureLangCode = azureLanguageMap[lang] || 'en-IN';
+            
+            if (!voiceName) {
+                console.warn(`No specific Azure voice mapped for language '${lang}'. Falling back to 'en-IN-NeerjaNeural'.`);
+                // Fallback to a known working English voice if specific Indic voice is missing
+                voiceName = 'en-IN-NeerjaNeural'; 
+            }
             
             // Construct SSML for better control over voice and language
-            const ssml = `<speak version="1.0" xmlns="http://www.w3.org/2001/10/synthesis" xml:lang="${azureLanguageMap[lang] || 'en-IN'}">
+            const ssml = `<speak version="1.0" xmlns="http://www.w3.org/2001/10/synthesis" xml:lang="${azureLangCode}">
                             <voice name="${voiceName}">${text}</voice>
                           </speak>`;
+
+            console.log("Attempting Azure TTS with SSML:", ssml); // Log the SSML being sent
 
             azureSynthesizer.speakSsmlAsync(
                 ssml,
                 result => {
                     if (result.reason === SpeechSDK.ResultReason.SynthesizingAudioCompleted) {
-                        console.log("Synthesis finished for: " + text);
+                        console.log("Synthesis finished successfully for: " + text);
+                    } else if (result.reason === SpeechSDK.ResultReason.Canceled) {
+                        console.error("Synthesis canceled (result): " + result.errorDetails);
+                        isSpeaking = false;
+                        stopSpeechButton.classList.remove('show');
                     } else {
-                        console.error("Synthesis failed. Result ID: " + result.resultId + "\n" +
+                        console.error("Synthesis failed with unexpected result reason. Result ID: " + result.resultId + "\n" +
                             "Error reason: " + result.reason + "\n" +
                             "Error details: " + result.errorDetails);
                         isSpeaking = false;
@@ -1315,7 +1353,7 @@
                     }
                 },
                 error => {
-                    console.error("Error during synthesis: " + error);
+                    console.error("Critical error during Azure synthesis: " + error);
                     isSpeaking = false;
                     stopSpeechButton.classList.remove('show');
                 }
@@ -1324,9 +1362,7 @@
 
         function stopSpeech() {
             if (azureSynthesizer && isSpeaking) {
-                // The Azure SDK doesn't have a direct 'cancel' equivalent like Web Speech API.
-                // Stopping the synthesizer will stop ongoing synthesis and close the connection.
-                // We re-initialize it when speak is called again.
+                // Calling close will trigger SynthesisCanceled event.
                 azureSynthesizer.close();
                 azureSynthesizer = null;
                 isSpeaking = false;
@@ -1340,7 +1376,7 @@
             const t = translations[lang];
             
             document.querySelector('.header p').textContent = t.powered;
-            document.querySelector('.settings-toggle').innerHTML = `⚙️ ${t.settings}`; /* Use innerHTML to allow icon */
+            document.querySelector('.settings-toggle').innerHTML = `⚙️ ${t.settings}`;
             
             document.querySelector('.settings-header h2').textContent = t.settings;
             document.querySelector('.close-settings').textContent = t.close;
@@ -1359,14 +1395,14 @@
             document.getElementById('stopListening').textContent = t.stopListening;
             document.getElementById('sendVoiceMessage').textContent = t.send;
 
-            document.getElementById('stopSpeechButton').innerHTML = `🔇 ${t.stopSpeech}`; /* Use innerHTML to allow icon */
+            document.getElementById('stopSpeechButton').innerHTML = `🔇 ${t.stopSpeech}`;
             
             updateWelcomeMessage(lang);
         }
 
         function updateWelcomeMessage(lang) {
             const messagesContainer = document.getElementById('messages');
-            if (messagesContainer.children.length <= 1) { // Only show welcome if no other messages
+            if (messagesContainer.children.length <= 1) {
                 messagesContainer.innerHTML = '';
                 addMessage(translations[lang].welcome, false);
             }
@@ -1446,8 +1482,10 @@
                 
                 // Ensure the AI responds in the selected language
                 if (language !== 'en') {
-                    systemPrompt += ` Always respond in ${translations[language].languageName}.`;
+                    systemPrompt += ` Your response MUST be entirely in ${translations[language].languageName}. Do not use any other language. Ensure perfect grammar and natural flow in ${translations[language].languageName}.`; // Emphasized prompt
                 }
+
+                console.log(`Sending prompt to Perplexity in ${language} with system prompt: "${systemPrompt}" and user message: "${message}"`); // Added more context for Perplexity call
 
                 const response = await fetch('https://api.perplexity.ai/chat/completions', {
                     method: 'POST',
@@ -1483,28 +1521,35 @@
 
                 if (!response.ok) {
                     const errorData = await response.text();
-                    console.error('API Error:', response.status, errorData);
+                    console.error('API Error from Perplexity:', response.status, errorData);
                     throw new Error(`HTTP ${response.status}: ${errorData}`);
                 }
 
                 const data = await response.json();
-                console.log('API Response:', data);
                 
                 let aiResponse = '';
                 if (data.choices && data.choices[0] && data.choices[0].message) {
                     aiResponse = data.choices[0].message.content;
                 } else {
-                    throw new Error('Invalid response format from API');
+                    throw new Error('Invalid response format from Perplexity API');
                 }
+                
+                console.log('Perplexity AI Raw Response Content:', aiResponse); // CRITICAL: Log the actual content
+                console.log('Selected Language for TTS:', language); // Confirm the language for TTS
 
                 addMessage(aiResponse, false);
 
-                if (document.getElementById('enableSpeech').checked) {
-                    speak(aiResponse, language); // Use the new Azure-based speak function
+                // Check if speech responses are enabled AND if the response has actual content
+                if (document.getElementById('enableSpeech').checked && aiResponse.trim().length > 0) {
+                    speak(aiResponse, language); // Use the Azure-based speak function
+                } else if (document.getElementById('enableSpeech').checked && aiResponse.trim().length === 0) {
+                    console.warn("Speech responses enabled, but AI returned empty response. Not speaking.");
+                } else {
+                    console.log("Speech responses not enabled or no content to speak.");
                 }
 
             } catch (error) {
-                console.error('Error:', error);
+                console.error('Error in sendMessage function:', error);
                 let errorMessage = `Error: ${error.message}`;
                 
                 if (error.message.includes('401')) {
@@ -1594,10 +1639,8 @@
                 console.error('Azure Speech SDK not loaded');
                 document.getElementById('voiceStatus').textContent = 'Azure Speech SDK not loaded. Voice input and output disabled.';
                 micButton.disabled = true;
-                document.getElementById('enableSpeech').disabled = true; // Disable speech toggle if SDK not present
+                document.getElementById('enableSpeech').disabled = true;
             } else {
-                // Initialize Azure Speech Synthesizer on load, so it's ready.
-                // It will be re-initialized if closed (e.g., by stopSpeech).
                 initializeAzureSynthesizer(); 
             }
         });
