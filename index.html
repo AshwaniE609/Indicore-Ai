@@ -355,7 +355,7 @@
         .message-input:focus {
             outline: none;
             border-color: var(--primary-color);
-            box-shadow: 0 0 0 4px rgba(var(--primary-color-rgb), 0.25), inset 0 1px 3px var(--shadow-medium);
+            box-shadow: 0 0 0 4px rgba(var(--primary-color-rgb), 0.25), inset 0 1px 3px var(--shadow-medium); /* More prominent focus shadow */
         }
 
         .send-button {
@@ -423,20 +423,22 @@
             100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(var(--error-color-rgb), 0); }
         }
 
+        /* GLOBAL stop-speech-button removed as per request */
+        /*
         .stop-speech-button {
             position: fixed;
             top: 50%;
-            right: 30px; /* Slightly more to the right */
+            right: 30px;
             transform: translateY(-50%);
             background: var(--error-color);
             color: white;
             border: none;
-            padding: 18px 25px; /* More padding */
-            border-radius: 45px; /* More rounded */
+            padding: 18px 25px;
+            border-radius: 45px;
             cursor: pointer;
             font-size: 18px;
             font-weight: 600;
-            box-shadow: 0 8px 25px rgba(var(--error-color-rgb), 0.45); /* Deeper shadow */
+            box-shadow: 0 8px 25px rgba(var(--error-color-rgb), 0.45);
             z-index: 1500;
             display: none;
             animation: bounceIn 0.5s ease-out forwards;
@@ -447,13 +449,14 @@
 
         .stop-speech-button:hover {
             background: #e04a5a;
-            transform: translateY(-50%) scale(1.05); /* More pronounced lift */
+            transform: translateY(-50%) scale(1.05);
             box-shadow: 0 10px 30px rgba(var(--error-color-rgb), 0.6);
         }
 
         .stop-speech-button.show {
             display: flex;
         }
+        */
 
         @keyframes bounceIn {
             0% { transform: translateY(-50%) scale(0.6); opacity: 0; }
@@ -670,7 +673,7 @@
         }
 
         /* Stop Bot Response Button Styling in Dialog */
-        #stopBotResponseButton {
+        #stopBotResponseButtonDialog { /* Changed ID to differentiate */
             background: #f44336; /* Red color for stop */
             color: white;
             border: none;
@@ -687,11 +690,44 @@
             display: none; /* Hidden by default, shown when bot is speaking */
         }
 
-        #stopBotResponseButton:hover {
+        #stopBotResponseButtonDialog:hover {
             background: #d32f2f;
             transform: translateY(-2px);
             box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
         }
+        
+        /* New Stop Bot feature toggle styling in settings */
+        #stopBotToggle {
+            background: #6c757d; /* Default grey */
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+            transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            width: fit-content; /* Adjust width */
+        }
+
+        #stopBotToggle.active {
+            background: var(--error-color); /* Red when active */
+            box-shadow: 0 4px 10px rgba(var(--error-color-rgb), 0.3);
+        }
+
+        #stopBotToggle:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+        #stopBotToggle.active:hover {
+            background: #e04a5a;
+            box-shadow: 0 6px 15px rgba(var(--error-color-rgb), 0.45);
+        }
+
 
         @media (max-width: 768px) {
             body {
@@ -795,16 +831,14 @@
                 padding: 12px 20px;
                 font-size: 15px;
             }
-
-            .stop-speech-button {
-                right: 20px;
-                padding: 14px 18px;
-                font-size: 15px;
-            }
-             #stopBotResponseButton {
+             #stopBotResponseButtonDialog {
                 padding: 10px 15px;
                 font-size: 14px;
                 margin-top: 15px;
+            }
+            #stopBotToggle {
+                font-size: 14px;
+                padding: 10px 15px;
             }
         }
 
@@ -834,11 +868,6 @@
                 height: 45px;
                 padding: 10px;
             }
-            .stop-speech-button {
-                padding: 10px 14px;
-                font-size: 13px;
-                gap: 5px;
-            }
             .voice-actions button {
                 font-size: 13px;
                 padding: 10px 15px;
@@ -847,10 +876,14 @@
                 min-height: 60px;
                 font-size: 14px;
             }
-             #stopBotResponseButton {
+             #stopBotResponseButtonDialog {
                 font-size: 12px;
                 padding: 8px 12px;
                 margin-top: 10px;
+            }
+            #stopBotToggle {
+                font-size: 12px;
+                padding: 8px 12px;
             }
         }
     </style>
@@ -905,6 +938,11 @@
                     <label for="systemPrompt">System Prompt</label>
                     <textarea id="systemPrompt" placeholder="Enter system prompt for the AI">You are a helpful Multilingual AI assistant. Your name is Indicore-Ai. Provide accurate, detailed, and well-structured responses.</textarea>
                 </div>
+
+                <div class="form-group">
+                    <label>Bot Response Control</label>
+                    <button id="stopBotToggle" onclick="toggleBotResponses()">🔇 Stop Bot Responses</button>
+                </div>
             </div>
         </div>
 
@@ -922,13 +960,8 @@
                     <button id="sendVoiceMessage" disabled>Send</button>
                 </div>
                 <div class="loading-indicator" id="voiceLoadingIndicator">🤖 AI is thinking...</div>
-                <button id="stopBotResponseButton" style="display: none;">Stop Bot Response</button>
-            </div>
+                <button id="stopBotResponseButtonDialog">Stop Bot Response</button> </div>
         </div>
-
-        <button class="stop-speech-button" id="stopSpeechButton">
-            🔇 Stop Speech
-        </button>
 
         <div class="messages" id="messages">
             </div>
@@ -950,11 +983,11 @@
         // --- CRITICAL: REPLACE WITH YOUR ACTUAL KEYS AND REGION ---
         const API_CONFIG = {
             perplexity: {
-                key: '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' // Replace with your Perplexity API Key
+                key: 'YOUR_PERPLEXITY_API_KEY' // Replace with your Perplexity API Key
             },
             azure: {
-                key: 'By9Rp2NRPVfgeznHmDftjPs8LxZYksBGUDQljb5tT2p3oBD5srbxJQQJ99BGACGhslBXJ3w3AAAYACOGTvgC', // Replace with your Azure Speech Service Key
-                region: 'centralindia' // Ensure this matches your Azure Speech Service resource region
+                key: 'YOUR_AZURE_SPEECH_KEY', // Replace with your Azure Speech Service Key
+                region: 'YOUR_AZURE_SPEECH_REGION' // Ensure this matches your Azure Speech Service resource region (e.g., 'centralindia')
             }
         };
         // --- END CRITICAL SECTION ---
@@ -982,10 +1015,11 @@
                 voiceStatusReady: "Ready to send. Click 'Send' to continue.",
                 voiceStatusError: "Error occurred. Please try again.",
                 transcriptionPlaceholder: "Your speech will appear here...",
-                stopSpeech: "🔇 Stop Speech",
                 textMode: "💬 Text Mode",
                 speechMode: "🎤 Speech Mode",
-                stopBotResponse: "Stop Bot Response"
+                stopBotResponses: "🔇 Stop Bot Responses",
+                resumeBotResponses: "🔊 Resume Bot Responses",
+                stopBotResponseButtonText: "Stop Bot Speaking" // New text for the dialog button
             },
             hi: {
                 welcome: "👋 स्वागत है! मैं Indicore AI, आपका बहुभाषी AI सहायक हूँ। इच्छित भाषा का चयन करने के लिए सेटिंग्स खोलें।",
@@ -1007,11 +1041,12 @@
                 voiceStatusReady: "भेजने के लिए तैयार। जारी रखने के लिए 'भेजें' पर क्लिक करें।",
                 voiceStatusError: "त्रुटि हुई। कृपया पुनः प्रयास करें।",
                 transcriptionPlaceholder: "आपका भाषण यहाँ दिखाई देगा...",
-                stopSpeech: "🔇 भाषण बंद करें",
                 errorNoMessage: "कृपया एक संदेश दर्ज करें",
                 textMode: "💬 टेक्स्ट मोड",
                 speechMode: "🎤 स्पीच मोड",
-                stopBotResponse: "बॉट प्रतिक्रिया रोकें"
+                stopBotResponses: "🔇 बॉट प्रतिक्रियाएँ रोकें",
+                resumeBotResponses: "🔊 बॉट प्रतिक्रियाएँ पुनः शुरू करें",
+                stopBotResponseButtonText: "बॉट को बोलना बंद करें"
             },
             mr: {
                 welcome: "👋 स्वागत आहे! मी Indicore AI, तुमचा बहुभाषी AI सहाय्यक आहे। इच्छित भाषा निवडण्यासाठी सेटिंग्ज उघडा।",
@@ -1033,11 +1068,12 @@
                 voiceStatusReady: "पाठवण्यासाठी तयार। सुरू ठेवण्यासाठी 'पाठवा' वर क्लिक करा।",
                 voiceStatusError: "त्रुटी झाली. कृपया पुन्हा प्रयत्न करा।",
                 transcriptionPlaceholder: "तुमचे भाषण येथे दिसेल...",
-                stopSpeech: "🔇 भाषण थांबवा",
                 errorNoMessage: "कृपया एक संदेश प्रविष्ट करा",
                 textMode: "💬 मजकूर मोड",
                 speechMode: "🎤 स्पीच मोड",
-                stopBotResponse: "बॉट प्रतिसाद थांबवा"
+                stopBotResponses: "🔇 बॉट प्रतिसाद थांबवा",
+                resumeBotResponses: "🔊 बॉट प्रतिसाद पुन्हा सुरू करा",
+                stopBotResponseButtonText: "बॉटला बोलणे थांबवा"
             },
             ta: {
                 welcome: "👋 வரவேற்கிறேன்! நான் Indicore AI, உங்கள் பல்மொழி AI உதவியாளர்। விரும்பிய மொழியைத் தேர்ந்தெடுக்க அமைப்புகளைத் திறக்கவும்।",
@@ -1059,11 +1095,12 @@
                 voiceStatusReady: "அனுப்ப தயார். தொடர 'அனுப்பு' என்பதைக் கிளிக் செய்யவும்।",
                 voiceStatusError: "பிழை ஏற்பட்டது. தயவுசெய்து மீண்டும் முயற்சிக்கவும்।",
                 transcriptionPlaceholder: "உங்கள் பேச்சு இங்கே தோன்றும்...",
-                stopSpeech: "🔇 பேச்சை நிறுத்து",
                 errorNoMessage: "தயவுசெய்து ஒரு செய்தியை உள்ளிடவும்",
                 textMode: "💬 உரை முறை",
                 speechMode: "🎤 பேச்சு முறை",
-                stopBotResponse: "பாட் பதிலை நிறுத்து"
+                stopBotResponses: "🔇 பாட் பதில்களை நிறுத்து",
+                resumeBotResponses: "🔊 பாட் பதில்களை மீண்டும் தொடங்கு",
+                stopBotResponseButtonText: "பாட் பேசுவதை நிறுத்து"
             },
             bn: {
                 welcome: "👋 স্বাগতম! আমি Indicore AI, আপনার বহুভাষিক AI সহকারী। পছন্দসই ভাষা নির্বাচন করতে সেটিংস খুলুন।",
@@ -1085,11 +1122,12 @@
                 voiceStatusReady: "পাঠানোর জন্য প্রস্তুত। চালিয়ে যেতে 'পাঠান' এ ক্লিক করুন।",
                 voiceStatusError: "ত্রুটি ঘটেছে। অনুগ্রহ করে আবার চেষ্টা করুন।",
                 transcriptionPlaceholder: "আপনার বক্তৃতা এখানে প্রদর্শিত হবে...",
-                stopSpeech: "🔇 বক্তৃতা বন্ধ করুন",
                 errorNoMessage: "অনুগ্রহ করে একটি বার্তা লিখুন",
                 textMode: "💬 টেক্সট মোড",
                 speechMode: "🎤 স্পিচ মোড",
-                stopBotResponse: "বট প্রতিক্রিয়া বন্ধ করুন"
+                stopBotResponses: "🔇 বট প্রতিক্রিয়া বন্ধ করুন",
+                resumeBotResponses: "🔊 বট প্রতিক্রিয়া পুনরায় শুরু করুন",
+                stopBotResponseButtonText: "বটকে কথা বলা বন্ধ করুন"
             },
             pa: {
                 welcome: "👋 ਜੀ ਆਇਆਂ ਨੂੰ! ਮੈਂ Indicore AI, ਤੁਹਾਡਾ ਬਹੁ-ਭਾਸ਼ੀ AI ਸਹਾਇਕ ਹਾਂ। ਲੋੜੀਂਦੀ ਭਾਸ਼ਾ ਚੁਣਨ ਲਈ ਸੈਟਿੰਗਾਂ ਖੋਲ੍ਹੋ।",
@@ -1111,11 +1149,12 @@
                 voiceStatusReady: "ਭੇਜਣ ਲਈ ਤਿਆਰ। ਜਾਰੀ ਰੱਖਣ ਲਈ 'ਭੇਜੋ' ਤੇ ਕਲਿੱਕ ਕਰੋ।",
                 voiceStatusError: "ਗਲਤੀ ਹੋਈ। ਕਿਰਪਾ ਕਰਕੇ ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੋ।",
                 transcriptionPlaceholder: "ਤੁਹਾਡਾ ਭਾਸ਼ਣ ਇੱਥੇ ਦਿਖਾਈ ਦੇਵੇਗਾ...",
-                stopSpeech: "🔇 ਬੋਲਣਾ ਬੰਦ ਕਰੋ",
                 errorNoMessage: "ਕਿਰਪਾ ਕਰਕੇ ਇੱਕ ਸੁਨੇਹਾ ਦਰਜ ਕਰੋ",
                 textMode: "💬 ਟੈਕਸਟ ਮੋਡ",
                 speechMode: "🎤 ਸਪੀਚ ਮੋਡ",
-                stopBotResponse: "ਬੋਟ ਪ੍ਰਤੀਕਿਰਿਆ ਰੋਕੋ"
+                stopBotResponses: "🔇 ਬੋਟ ਪ੍ਰਤੀਕਿਰਿਆ ਰੋਕੋ",
+                resumeBotResponses: "🔊 ਬੋਟ ਪ੍ਰਤੀਕਿਰਿਆ ਮੁੜ ਚਾਲੂ ਕਰੋ",
+                stopBotResponseButtonText: "ਬੋਟ ਨੂੰ ਬੋਲਣਾ ਬੰਦ ਕਰੋ"
             },
             gu: {
                 welcome: "👋 સ્વાગત છે! હું Indicore AI, તમારો બહુભાષી AI સહાયક છું। ઇચ્છિત ભાષા પસંદ કરવા માટે સેટિંગ્સ ખોલો।",
@@ -1137,11 +1176,12 @@
                 voiceStatusReady: "મોકલવા માટે તૈયાર। ચાલુ રાખવા માટે 'મોકલો' પર ક્લિક કરો।",
                 voiceStatusError: "ભૂલ થઈ. કૃપા કરીને ફરીથી પ્રયાસ કરો।",
                 transcriptionPlaceholder: "તમારું ભાષણ અહીં દેખાશે...",
-                stopSpeech: "🔇 ભાષણ બંધ કરો",
                 errorNoMessage: "કૃપા કરીને એક સંદેશ દાખલ કરો",
                 textMode: "💬 ટેક્સ્ટ મોડ",
                 speechMode: "🎤 સ્પીચ મોડ",
-                stopBotResponse: "બોટ પ્રતિસાદ રોકો"
+                stopBotResponses: "🔇 બોટ પ્રતિસાદ રોકો",
+                resumeBotResponses: "🔊 બોટ પ્રતિસાદ ફરી શરૂ કરો",
+                stopBotResponseButtonText: "બોટને બોલવાનું બંધ કરો"
             }
         };
 
@@ -1157,7 +1197,6 @@
         };
 
         // Azure Speech Synthesis Voice Mapping
-        // These are common Azure Neural voices. VERIFY THESE ARE AVAILABLE IN YOUR AZURE REGION.
         const azureVoiceMap = {
             'en': 'en-IN-NeerjaNeural', // English (India) - Female
             'hi': 'hi-IN-MadhurNeural', // Hindi (India) - Male
@@ -1189,8 +1228,9 @@
         const transcription = document.getElementById('transcription');
         const messageInput = document.getElementById('messageInput');
         const sendButton = document.getElementById('sendButton');
-        const stopSpeechButton = document.getElementById('stopSpeechButton'); // Global stop speech button
-        const stopBotResponseButton = document.getElementById('stopBotResponseButton'); // New stop bot response button in dialog
+        // const stopSpeechButton = document.getElementById('stopSpeechButton'); // Global stop speech button - REMOVED
+        const stopBotResponseButtonDialog = document.getElementById('stopBotResponseButtonDialog'); // New stop bot response button in dialog
+        const stopBotToggle = document.getElementById('stopBotToggle'); // The new toggle button in settings
         const chatContainer = document.querySelector('.chat-container');
         const modeToggle = document.getElementById('modeToggle');
         const mainLoadingIndicator = document.getElementById('loading');
@@ -1204,6 +1244,7 @@
         let isSpeaking = false; // Tracks if Azure TTS is currently speaking
         let azureSynthesizer = null; // Azure Speech Synthesizer instance
         let currentChatMode = 'text-to-text'; // Default mode
+        let botResponsesStopped = false; // New state variable for stopping all bot responses
 
         // Azure Speech Recognition class
         class AzureSpeechRecognizer {
@@ -1392,37 +1433,37 @@
 
                 azureSynthesizer.SynthesisStarted = () => {
                     isSpeaking = true;
-                    stopSpeechButton.classList.add('show'); // Show global stop button
-                    stopBotResponseButton.style.display = 'block'; // Show dialog stop button
+                    // stopSpeechButton.classList.add('show'); // This is the global button, likely no longer needed
+                    stopBotResponseButtonDialog.style.display = 'block'; // Show dialog stop button
                     console.log('Azure speech synthesis started.');
                 };
 
                 azureSynthesizer.SynthesisCompleted = () => {
                     isSpeaking = false;
-                    stopSpeechButton.classList.remove('show');
-                    stopBotResponseButton.style.display = 'none'; // Hide dialog stop button
+                    // stopSpeechButton.classList.remove('show');
+                    stopBotResponseButtonDialog.style.display = 'none'; // Hide dialog stop button
                     console.log('Azure speech synthesis completed.');
                     if (azureSynthesizer) {
                         azureSynthesizer.close();
                         azureSynthesizer = null;
                     }
-                    // Re-enable listening after speech completes in speech-to-speech mode
-                    if (currentChatMode === 'speech-to-speech' && voiceDialog.style.display === 'flex') {
+                    // Re-enable listening after speech completes in speech-to-speech mode, if bot is not stopped
+                    if (currentChatMode === 'speech-to-speech' && voiceDialog.style.display === 'flex' && !botResponsesStopped) {
                          azureSpeechRecognizer.startRecognition();
                     }
                 };
 
                 azureSynthesizer.SynthesisCanceled = (s, e) => {
                     isSpeaking = false;
-                    stopSpeechButton.classList.remove('show');
-                    stopBotResponseButton.style.display = 'none'; // Hide dialog stop button
+                    // stopSpeechButton.classList.remove('show');
+                    stopBotResponseButtonDialog.style.display = 'none'; // Hide dialog stop button
                     console.error(`Azure speech synthesis canceled. Reason: ${e.reason}. Error details: ${e.errorDetails}. For more info: ${e.errorDetails}`);
                     if (azureSynthesizer) {
                         azureSynthesizer.close();
                         azureSynthesizer = null;
                     }
-                    // Re-enable listening even if speech was canceled
-                    if (currentChatMode === 'speech-to-speech' && voiceDialog.style.display === 'flex') {
+                    // Re-enable listening even if speech was canceled, if bot is not stopped
+                    if (currentChatMode === 'speech-to-speech' && voiceDialog.style.display === 'flex' && !botResponsesStopped) {
                         azureSpeechRecognizer.startRecognition();
                     }
                 };
@@ -1430,10 +1471,10 @@
                 azureSynthesizer.SynthesisError = (s, e) => {
                     console.error(`Azure speech synthesis error event: ${e.errorDetails}`);
                     isSpeaking = false;
-                    stopSpeechButton.classList.remove('show');
-                    stopBotResponseButton.style.display = 'none'; // Hide dialog stop button
-                    // Re-enable listening on error
-                    if (currentChatMode === 'speech-to-speech' && voiceDialog.style.display === 'flex') {
+                    // stopSpeechButton.classList.remove('show');
+                    stopBotResponseButtonDialog.style.display = 'none'; // Hide dialog stop button
+                    // Re-enable listening on error, if bot is not stopped
+                    if (currentChatMode === 'speech-to-speech' && voiceDialog.style.display === 'flex' && !botResponsesStopped) {
                         azureSpeechRecognizer.startRecognition();
                     }
                 };
@@ -1445,6 +1486,12 @@
         }
 
         function speak(text, lang) {
+            // Do not speak if bot responses are globally stopped
+            if (botResponsesStopped) {
+                console.log("Bot responses are stopped. Not speaking.");
+                return;
+            }
+
             if (isSpeaking) {
                 stopSpeech(); // Stop any ongoing speech before starting a new one
             }
@@ -1486,22 +1533,22 @@
                     } else if (result.reason === SpeechSDK.ResultReason.Canceled) {
                         console.error("Synthesis canceled (result): " + result.errorDetails);
                         isSpeaking = false;
-                        stopSpeechButton.classList.remove('show');
-                        stopBotResponseButton.style.display = 'none';
+                        // stopSpeechButton.classList.remove('show');
+                        stopBotResponseButtonDialog.style.display = 'none';
                     } else {
                         console.error("Synthesis failed with unexpected result reason. Result ID: " + result.resultId + "\n" +
                             "Error reason: " + result.reason + "\n" +
                             "Error details: " + result.errorDetails);
                         isSpeaking = false;
-                        stopSpeechButton.classList.remove('show');
-                        stopBotResponseButton.style.display = 'none';
+                        // stopSpeechButton.classList.remove('show');
+                        stopBotResponseButtonDialog.style.display = 'none';
                     }
                 },
                 error => {
                     console.error("Critical error during Azure synthesis: " + error);
                     isSpeaking = false;
-                    stopSpeechButton.classList.remove('show');
-                    stopBotResponseButton.style.display = 'none';
+                    // stopSpeechButton.classList.remove('show');
+                    stopBotResponseButtonDialog.style.display = 'none';
                 }
             );
         }
@@ -1511,12 +1558,12 @@
                 azureSynthesizer.close();
                 azureSynthesizer = null;
                 isSpeaking = false;
-                stopSpeechButton.classList.remove('show');
-                stopBotResponseButton.style.display = 'none'; // Hide dialog stop button
+                // stopSpeechButton.classList.remove('show');
+                stopBotResponseButtonDialog.style.display = 'none'; // Hide dialog stop button
                 console.log('Azure speech stopped by user (synthesizer closed).');
             }
-            // If in speech-to-speech mode and speech was stopped, restart listening
-            if (currentChatMode === 'speech-to-speech' && voiceDialog.style.display === 'flex') {
+            // If in speech-to-speech mode and speech was stopped, restart listening, if bot is not stopped
+            if (currentChatMode === 'speech-to-speech' && voiceDialog.style.display === 'flex' && !botResponsesStopped) {
                 azureSpeechRecognizer.startRecognition();
             }
         }
@@ -1545,9 +1592,18 @@
             document.getElementById('stopListening').textContent = t.stopListening;
             document.getElementById('sendVoiceMessage').textContent = t.send;
 
-            stopSpeechButton.innerHTML = `🔇 ${t.stopSpeech}`;
-            stopBotResponseButton.textContent = t.stopBotResponse; // Update the new button's text
+            // stopSpeechButton.innerHTML = `🔇 ${t.stopSpeech}`; // This button is removed
+            stopBotResponseButtonDialog.textContent = t.stopBotResponseButtonText; // Update the new dialog button's text
             
+            // Update the new toggle button in settings
+            if (botResponsesStopped) {
+                stopBotToggle.innerHTML = `🔊 ${t.resumeBotResponses}`;
+                stopBotToggle.classList.add('active');
+            } else {
+                stopBotToggle.innerHTML = `🔇 ${t.stopBotResponses}`;
+                stopBotToggle.classList.remove('active');
+            }
+
             // Update mode toggle button text
             modeToggle.innerHTML = currentChatMode === 'text-to-text' ? `💬 ${t.textMode}` : `🎤 ${t.speechMode}`;
 
@@ -1568,7 +1624,8 @@
                 model: document.getElementById('modelSelect').value,
                 systemPrompt: document.getElementById('systemPrompt').value,
                 language: document.getElementById('languageSelect').value,
-                chatMode: currentChatMode // Save the current mode
+                chatMode: currentChatMode,
+                botResponsesStopped: botResponsesStopped // Save the new state
             };
             localStorage.setItem('indicoreSettings', JSON.stringify(settings));
         }
@@ -1578,19 +1635,20 @@
             if (saved) {
                 const settings = JSON.parse(saved);
                 document.getElementById('modelSelect').value = settings.model || 'sonar-pro';
-                document.getElementById('systemPrompt').value = settings.systemPrompt || 'You are a helpful Multilingual AI assistant. Provide accurate, detailed, and well-structured responses.';
+                document.getElementById('systemPrompt').value = settings.systemPrompt || 'You are a helpful Multilingual AI assistant. Your name is Indicore-Ai. Provide accurate, detailed, and well-structured responses.';
                 document.getElementById('languageSelect').value = settings.language || 'en';
                 
-                currentChatMode = settings.chatMode || 'text-to-text'; // Load the saved mode
+                currentChatMode = settings.chatMode || 'text-to-text';
+                botResponsesStopped = settings.botResponsesStopped || false; // Load the new state
                 
                 updateInterface(settings.language || 'en');
-                applyChatMode(currentChatMode); // Apply the loaded mode immediately
+                applyChatMode(currentChatMode);
                 
                 const modelInfo = document.getElementById('modelInfo');
                 modelInfo.textContent = modelDescriptions[settings.model || 'sonar-pro'];
             } else {
                 addMessage(translations['en'].welcome, false);
-                applyChatMode('text-to-text'); // Default to text mode if no settings found
+                applyChatMode('text-to-text');
             }
         }
 
@@ -1599,6 +1657,29 @@
             panel.classList.toggle('active');
             saveSettings();
         }
+
+        // New function to toggle bot responses on/off
+        function toggleBotResponses() {
+            botResponsesStopped = !botResponsesStopped;
+            const lang = document.getElementById('languageSelect').value;
+            updateInterface(lang); // Update button text and class
+            saveSettings();
+
+            if (botResponsesStopped) {
+                stopSpeech(); // Immediately stop any ongoing speech if bot is stopped
+                if (currentChatMode === 'speech-to-speech' && azureSpeechRecognizer.isListening) {
+                    azureSpeechRecognizer.stopRecognition(); // Stop recognition as well
+                }
+                addMessage(`Bot responses are now ${translations[lang].stopBotResponses.includes('Stop') ? 'stopped' : 'रोके गए'}.`, false);
+            } else {
+                 addMessage(`Bot responses are now ${translations[lang].resumeBotResponses.includes('Resume') ? 'resumed' : 'पुनः शुरू'}.`, false);
+                 // If in speech mode, and now resumed, restart listening
+                 if (currentChatMode === 'speech-to-speech' && voiceDialog.style.display === 'flex' && !azureSpeechRecognizer.isListening) {
+                    azureSpeechRecognizer.startRecognition();
+                 }
+            }
+        }
+
 
         function toggleMode() {
             if (currentChatMode === 'text-to-text') {
@@ -1609,6 +1690,7 @@
                     azureSpeechRecognizer.stopRecognition();
                 }
                 voiceDialog.style.display = 'none';
+                stopSpeech(); // Stop any speech if user switches to text mode
             }
             saveSettings();
             applyChatMode(currentChatMode);
@@ -1623,18 +1705,24 @@
                 sendButton.style.display = 'flex';
                 micButton.style.display = 'none';
                 voiceDialog.style.display = 'none';
-                mainLoadingIndicator.classList.remove('active'); // Ensure main loading is off
-                voiceLoadingIndicator.classList.remove('active'); // Hide voice dialog loading
-                stopBotResponseButton.style.display = 'none'; // Hide the dialog stop button
+                mainLoadingIndicator.classList.remove('active');
+                voiceLoadingIndicator.classList.remove('active');
+                stopBotResponseButtonDialog.style.display = 'none'; // Hide the dialog stop button
             } else { // speech-to-speech
                 chatContainer.classList.remove('text-mode');
                 chatContainer.classList.add('speech-mode');
                 messageInput.style.display = 'none';
                 sendButton.style.display = 'none';
                 micButton.style.display = 'flex';
-                mainLoadingIndicator.classList.remove('active'); // Hide main loading
+                mainLoadingIndicator.classList.remove('active');
                 voiceDialog.style.display = 'flex';
-                azureSpeechRecognizer.startRecognition();
+                // Only start recognition if bot responses are not stopped
+                if (!botResponsesStopped) {
+                    azureSpeechRecognizer.startRecognition();
+                } else {
+                    const lang = document.getElementById('languageSelect').value;
+                    voiceStatus.textContent = `Bot responses are ${translations[lang].stopBotResponses.includes('Stop') ? 'stopped' : 'रोके गए'}. Listening disabled.`;
+                }
             }
         }
 
@@ -1662,6 +1750,18 @@
                 return;
             }
 
+            // Immediately check if bot responses are stopped
+            if (botResponsesStopped) {
+                addMessage("Bot responses are currently stopped.", false);
+                console.log("Bot responses are stopped. Not sending message to API.");
+                messageInput.value = ''; // Clear input even if not sent
+                // In speech mode, resume listening after user input if bot is stopped (no API call)
+                if (currentChatMode === 'speech-to-speech' && voiceDialog.style.display === 'flex' && !azureSpeechRecognizer.isListening) {
+                    azureSpeechRecognizer.startRecognition();
+                }
+                return; // Stop the function here
+            }
+
             if (currentChatMode === 'text-to-text') {
                 addMessage(message, true);
             }
@@ -1676,8 +1776,8 @@
                     azureSpeechRecognizer.stopRecognition();
                 }
             }
-            sendButton.disabled = true;
-            micButton.disabled = true;
+            sendButton.disabled = false; // Keep Send button enabled for new messages
+            micButton.disabled = true; // Still disable mic during API call
 
             try {
                 const model = document.getElementById('modelSelect').value;
@@ -1747,7 +1847,7 @@
                     speak(aiResponse, language);
                 } else if (currentChatMode === 'speech-to-speech' && aiResponse.trim().length === 0) {
                     console.warn("Speech mode active, but AI returned empty response. Not speaking.");
-                    if (voiceDialog.style.display === 'flex') {
+                    if (voiceDialog.style.display === 'flex' && !botResponsesStopped) {
                         azureSpeechRecognizer.startRecognition();
                     }
                 } else {
@@ -1779,7 +1879,7 @@
                 sendButton.disabled = false;
                 micButton.disabled = false;
                 messageInput.focus();
-                if (currentChatMode === 'speech-to-speech' && !isSpeaking && !azureSpeechRecognizer.isListening && voiceDialog.style.display === 'flex') {
+                if (currentChatMode === 'speech-to-speech' && !isSpeaking && !azureSpeechRecognizer.isListening && voiceDialog.style.display === 'flex' && !botResponsesStopped) {
                     azureSpeechRecognizer.startRecognition();
                 }
             }
@@ -1798,7 +1898,12 @@
                 const lang = document.getElementById('languageSelect').value;
                 document.getElementById('voiceStatus').textContent = translations[lang].voiceStatusStart;
                 resetTranscription();
-                azureSpeechRecognizer.startRecognition();
+                // Only start recognition if bot responses are not stopped
+                if (!botResponsesStopped) {
+                    azureSpeechRecognizer.startRecognition();
+                } else {
+                    voiceStatus.textContent = `Bot responses are ${translations[lang].stopBotResponses.includes('Stop') ? 'stopped' : 'रोके गए'}. Listening disabled.`;
+                }
             }
         });
 
@@ -1809,12 +1914,16 @@
             if (azureSpeechRecognizer.recognizer && azureSpeechRecognizer.isListening) {
                 azureSpeechRecognizer.stopRecognition();
             }
-            // Also stop any ongoing speech if dialog is closed
-            stopSpeech();
+            stopSpeech(); // Stop any ongoing speech if dialog is closed
         });
 
         startListening.addEventListener('click', function() {
-            azureSpeechRecognizer.startRecognition();
+            if (!botResponsesStopped) {
+                azureSpeechRecognizer.startRecognition();
+            } else {
+                const lang = document.getElementById('languageSelect').value;
+                voiceStatus.textContent = `Bot responses are ${translations[lang].stopBotResponses.includes('Stop') ? 'stopped' : 'रोके गए'}. Cannot start listening.`;
+            }
         });
 
         stopListening.addEventListener('click', function() {
@@ -1836,12 +1945,8 @@
             }
         });
 
-        // Event listener for the new "Stop Bot Response" button
-        stopBotResponseButton.addEventListener('click', stopSpeech);
-
-        // This global stopSpeechButton might still be useful for interrupting TTS even in text mode if you re-enable its visibility globally.
-        // For now, it's just a duplicate of the dialog's stop button.
-        stopSpeechButton.addEventListener('click', stopSpeech); 
+        // Event listener for the new "Stop Bot Response" button inside the dialog
+        stopBotResponseButtonDialog.addEventListener('click', stopSpeech);
 
         document.getElementById('languageSelect').addEventListener('change', function() {
             updateInterface(this.value);
@@ -1855,12 +1960,18 @@
         });
 
         document.addEventListener('DOMContentLoaded', async function() {
-            loadSettings();
+            loadSettings(); // Load all settings including botResponsesStopped
             
             if (typeof SpeechSDK === 'undefined') {
                 console.error('Azure Speech SDK not loaded');
                 document.getElementById('voiceStatus').textContent = 'Azure Speech SDK not loaded. Voice input and output disabled.';
                 micButton.disabled = true;
+                // If SDK is not loaded, ensure speech-related buttons are disabled
+                startListening.disabled = true;
+                stopListening.disabled = true;
+                sendVoiceMessage.disabled = true;
+                stopBotResponseButtonDialog.disabled = true; // Disable this dialog button as well
+                stopBotToggle.disabled = true; // Disable this toggle if speech isn't available
             } else {
                 initializeAzureSynthesizer(); 
                 micButton.disabled = false; 
