@@ -422,7 +422,8 @@
             50% { transform: scale(1.1); box-shadow: 0 0 0 15px rgba(var(--error-color-rgb), 0); }
             100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(var(--error-color-rgb), 0); }
         }
-
+        
+        /* --- NEW: Stop Speech Button Styles --- */
         .stop-speech-button {
             position: fixed;
             top: 50%;
@@ -438,7 +439,7 @@
             font-weight: 600;
             box-shadow: 0 8px 25px rgba(var(--error-color-rgb), 0.45); /* Deeper shadow */
             z-index: 1500;
-            display: none;
+            display: none; /* Hidden by default */
             animation: bounceIn 0.5s ease-out forwards;
             transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
             align-items: center;
@@ -461,6 +462,7 @@
             80% { transform: translateY(-50%) scale(0.97); }
             100% { transform: translateY(-50%) scale(1); }
         }
+        /* --- END NEW --- */
 
         .voice-dialog {
             display: none;
@@ -880,7 +882,7 @@
                 <div class="loading-indicator" id="voiceLoadingIndicator">🤖 AI is thinking...</div>
             </div>
         </div>
-
+        
         <button class="stop-speech-button" id="stopSpeechButton">
             🔇 Stop Speech
         </button>
@@ -1137,7 +1139,7 @@
         const transcription = document.getElementById('transcription');
         const messageInput = document.getElementById('messageInput');
         const sendButton = document.getElementById('sendButton');
-        const stopSpeechButton = document.getElementById('stopSpeechButton');
+        const stopSpeechButton = document.getElementById('stopSpeechButton'); // NEW
         const chatContainer = document.querySelector('.chat-container');
         const modeToggle = document.getElementById('modeToggle');
         const mainLoadingIndicator = document.getElementById('loading'); // Original loading indicator
@@ -1785,7 +1787,8 @@
                 resetTranscription();
             }
         });
-
+        
+        // --- NEW: Event Listener for Stop Button ---
         stopSpeechButton.addEventListener('click', stopSpeech);
 
         document.getElementById('languageSelect').addEventListener('change', function() {
