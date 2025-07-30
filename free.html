@@ -407,7 +407,6 @@
             font-weight: 600;
             box-shadow: 0 8px 25px rgba(var(--error-color-rgb), 0.45); /* Deeper shadow */
             z-index: 1500;
-            /* FIX: Ensure it's hidden by default, but display: flex when 'show' class is added */
             display: none;
             animation: bounceIn 0.5s ease-out forwards;
             transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
@@ -421,7 +420,6 @@
             box-shadow: 0 10px 30px rgba(var(--error-color-rgb), 0.6);
         }
 
-        /* FIX: This rule makes the button visible when the 'show' class is applied */
         .stop-speech-button.show {
             display: flex;
         }
@@ -753,9 +751,6 @@
                 <button class="close-settings" onclick="toggleSettings()">Close</button>
             </div>
             
-            <div class="api-notice">
-                ✅ API Keys are configured and ready to use!
-            </div>
             
             <div class="settings-grid">
                 <div class="form-group">
@@ -789,7 +784,7 @@
 
                 <div class="form-group">
                     <label for="systemPrompt">System Prompt</label>
-                    <textarea id="systemPrompt" placeholder="Enter system prompt for the AI">You are a helpful Multilingual AI assistant. Provide accurate, detailed, and well-structured responses.</textarea>
+                    <textarea id="systemPrompt" placeholder="Enter system prompt for the AI">You are a helpful Multilingual AI assistant Your name is Indicore-Ai. Provide accurate, detailed, and well-structured responses.</textarea>
                 </div>
 
                 <div class="form-group">
@@ -853,8 +848,8 @@
         // Enhanced translations object with Gujarati support
         const translations = {
             en: {
-                welcome: "👋 Welcome! I'm Indicore AI, your Multilingual AI assistant.",
-                settings: "⚙️ Settings",
+                welcome: "👋 Welcome! I'm Indicore AI, your Multilingual AI assistant. Open Settings to select desired Language.",
+                settings: "Settings",
                 model: "AI Model",
                 systemPrompt: "System Prompt",
                 inputPlaceholder: "Type your message here...",
@@ -878,7 +873,7 @@
             },
             hi: {
                 welcome: "👋 स्वागत है! मैं Indicore AI, आपका बहुभाषी AI सहायक हूँ",
-                settings: "⚙️ सेटिंग्स",
+                settings: "सेटिंग्स",
                 model: "AI मॉडल",
                 systemPrompt: "सिस्टम संकेत",
                 inputPlaceholder: "अपना संदेश यहाँ टाइप करें...",
@@ -902,7 +897,7 @@
             },
             mr: {
                 welcome: "👋 स्वागत आहे! मी Indicore AI, तुमचा बहुभाषी AI सहाय्यक आहे",
-                settings: "⚙️ सेटिंग्ज",
+                settings: " सेटिंग्ज",
                 model: "AI मॉडेल",
                 systemPrompt: "सिस्टम सूचना",
                 inputPlaceholder: "तुमचा संदेश येथे टाइप करा...",
@@ -926,7 +921,7 @@
             },
             ta: {
                 welcome: "👋 வரவேற்கிறேன்! நான் Indicore AI, உங்கள் பல்மொழி AI உதவியாளர்",
-                settings: "⚙️ அமைப்புகள்",
+                settings: " அமைப்புகள்",
                 model: "AI மாதிரி",
                 systemPrompt: "அமைப்பு குறிப்பு",
                 inputPlaceholder: "உங்கள் செய்தியை இங்கே தட்டச்சு செய்யவும்...",
@@ -950,7 +945,7 @@
             },
             bn: {
                 welcome: "👋 স্বাগতম! আমি Indicore AI, আপনার বহুভাষিক AI সহকারী",
-                settings: "⚙️ সেটিংস",
+                settings: "সেটিংস",
                 model: "AI মডেল",
                 systemPrompt: "সিস্টেম প্রম্পট",
                 inputPlaceholder: "এখানে আপনার বার্তা টাইপ করুন...",
@@ -974,7 +969,7 @@
             },
             pa: {
                 welcome: "👋 ਜੀ ਆਇਆਂ ਨੂੰ! ਮੈਂ Indicore AI, ਤੁਹਾਡਾ ਬਹੁ-ਭਾਸ਼ੀ AI ਸਹਾਇਕ ਹਾਂ",
-                settings: "⚙️ ਸੈਟਿੰਗਾਂ",
+                settings: " ਸੈਟਿੰਗਾਂ",
                 model: "AI ਮਾਡਲ",
                 systemPrompt: "ਸਿਸਟਮ ਪ੍ਰੋਮਪਟ",
                 inputPlaceholder: "ਆਪਣਾ ਸੁਨੇਹਾ ਇੱਥੇ ਲਿਖੋ...",
@@ -997,8 +992,8 @@
                 errorNoMessage: "ਕਿਰਪਾ ਕਰਕੇ ਇੱਕ ਸੁਨੇਹਾ ਦਰਜ ਕਰੋ"
             },
             gu: {
-                welcome: "👋 સ્વાગત છે! હું Indicore AI, તમારો બહુભਾષી AI સહાયક છું",
-                settings: "⚙️ સેટિંગ્સ",
+                welcome: "👋 સ્વાગત છે! હું Indicore AI, તમારો બહુભાષી AI સહાયક છું",
+                settings: "સેટિંગ્સ",
                 model: "AI મોડેલ",
                 systemPrompt: "સિસ્ટમ પ્રોમ્પ્ટ",
                 inputPlaceholder: "તમારો સંદેશ અહીં લખો...",
@@ -1036,6 +1031,7 @@
         // Azure Speech Synthesis Voice Mapping
         // These are common Azure Neural voices. VERIFY THESE ARE AVAILABLE IN YOUR AZURE REGION.
         // If your test.html worked, these names should be valid for your region.
+        
         const azureVoiceMap = {
             'en': 'en-IN-NeerjaNeural', // English (India) - Female
             'hi': 'hi-IN-MadhurNeural', // Hindi (India) - Male
@@ -1266,40 +1262,36 @@
                 
                 azureSynthesizer = new SpeechSDK.SpeechSynthesizer(speechConfig);
 
-                // Event listener to show the stop button when speech starts
                 azureSynthesizer.SynthesisStarted = () => {
                     isSpeaking = true;
-                    stopSpeechButton.classList.add('show'); // Add 'show' class to make button visible
+                    stopSpeechButton.classList.add('show');
                     console.log('Azure speech synthesis started.');
                 };
 
-                // Event listener to hide the stop button when speech completes
                 azureSynthesizer.SynthesisCompleted = () => {
                     isSpeaking = false;
-                    stopSpeechButton.classList.remove('show'); // Remove 'show' class to hide button
+                    stopSpeechButton.classList.remove('show');
                     console.log('Azure speech synthesis completed.');
-                    if (azureSynthesizer) { // Ensure synthesizer is closed after completion
+                    if (azureSynthesizer) {
                         azureSynthesizer.close();
                         azureSynthesizer = null;
                     }
                 };
 
-                // Event listener to hide the stop button and log errors if synthesis is canceled
                 azureSynthesizer.SynthesisCanceled = (s, e) => {
                     isSpeaking = false;
-                    stopSpeechButton.classList.remove('show'); // Remove 'show' class to hide button
+                    stopSpeechButton.classList.remove('show');
                     console.error(`Azure speech synthesis canceled. Reason: ${e.reason}. Error details: ${e.errorDetails}. For more info: ${e.errorDetails}`);
-                    if (azureSynthesizer) { // Ensure synthesizer is closed after cancellation
+                    if (azureSynthesizer) {
                         azureSynthesizer.close();
                         azureSynthesizer = null;
                     }
                 };
                 
-                // General error handler for synthesis
                 azureSynthesizer.SynthesisError = (s, e) => {
                     console.error(`Azure speech synthesis error event: ${e.errorDetails}`);
                     isSpeaking = false;
-                    stopSpeechButton.classList.remove('show'); // Remove 'show' class on general error
+                    stopSpeechButton.classList.remove('show');
                 };
 
             } catch (error) {
@@ -1309,15 +1301,8 @@
         }
 
         function speak(text, lang) {
-            // Stop any ongoing speech before starting a new one
             if (isSpeaking) {
-                stopSpeech(); 
-            }
-
-            // Check if speech responses are actually enabled in settings
-            if (!document.getElementById('enableSpeech').checked) {
-                console.log("Speech responses are disabled in settings. Not speaking.");
-                return;
+                stopSpeech(); // Stop any ongoing speech before starting a new one
             }
 
             if (!SpeechSDK) {
@@ -1325,8 +1310,9 @@
                 return;
             }
 
-            // Re-initialize synthesizer for each new speech request
-            initializeAzureSynthesizer(); 
+            if (!azureSynthesizer) {
+                initializeAzureSynthesizer();
+            }
 
             if (!azureSynthesizer) { // Check again if initialization failed
                 console.error('Azure Speech Synthesizer could not be initialized. Cannot speak.');
@@ -1334,16 +1320,14 @@
             }
 
             const voiceName = azureVoiceMap[lang];
-            const azureLangCode = azureLanguageMap[lang] || 'en-IN'; // Default to en-IN for locale
+            const azureLangCode = azureLanguageMap[lang] || 'en-IN';
             
-            // Fallback for voice if not found in map, or if the initial language choice
-            // might not have a strong voice.
             if (!voiceName) {
                 console.warn(`No specific Azure voice mapped for language '${lang}'. Falling back to 'en-IN-NeerjaNeural'.`);
-                // Use a reliable English voice as a fallback if the selected Indic voice isn't defined or available.
+                // Fallback to a known working English voice if specific Indic voice is missing
                 voiceName = 'en-IN-NeerjaNeural'; 
             }
-
+            
             // Construct SSML for better control over voice and language
             const ssml = `<speak version="1.0" xmlns="http://www.w3.org/2001/10/synthesis" xml:lang="${azureLangCode}">
                             <voice name="${voiceName}">${text}</voice>
@@ -1355,37 +1339,35 @@
                 ssml,
                 result => {
                     if (result.reason === SpeechSDK.ResultReason.SynthesizingAudioCompleted) {
-                        console.log("Synthesis finished successfully (callback): " + text);
+                        console.log("Synthesis finished successfully for: " + text);
                     } else if (result.reason === SpeechSDK.ResultReason.Canceled) {
-                        // This branch is now primarily handled by the SynthesisCanceled event listener
-                        console.error("Synthesis canceled (callback): " + result.errorDetails);
+                        console.error("Synthesis canceled (result): " + result.errorDetails);
+                        isSpeaking = false;
+                        stopSpeechButton.classList.remove('show');
                     } else {
-                        console.error("Synthesis failed with unexpected result reason (callback). Result ID: " + result.resultId + "\n" +
+                        console.error("Synthesis failed with unexpected result reason. Result ID: " + result.resultId + "\n" +
                             "Error reason: " + result.reason + "\n" +
                             "Error details: " + result.errorDetails);
+                        isSpeaking = false;
+                        stopSpeechButton.classList.remove('show');
                     }
                 },
                 error => {
-                    console.error("Critical error during Azure synthesis (speakSsmlAsync promise rejection): " + error);
+                    console.error("Critical error during Azure synthesis: " + error);
+                    isSpeaking = false;
+                    stopSpeechButton.classList.remove('show');
                 }
             );
         }
 
-        // Function to stop current speech playback
         function stopSpeech() {
             if (azureSynthesizer && isSpeaking) {
-                console.log('Stopping Azure speech playback...');
-                // Calling close will trigger the SynthesisCanceled event, which handles state cleanup.
-                azureSynthesizer.close(); 
-                // We do NOT set azureSynthesizer = null here; it's handled by the event.
-            } else if (azureSynthesizer) {
-                console.log('Azure speech synthesizer exists but not currently speaking. Closing.');
+                // Calling close will trigger SynthesisCanceled event.
                 azureSynthesizer.close();
                 azureSynthesizer = null;
                 isSpeaking = false;
                 stopSpeechButton.classList.remove('show');
-            } else {
-                console.log('No active Azure speech synthesizer to stop.');
+                console.log('Azure speech stopped by user (synthesizer closed).');
             }
         }
         // --- End Azure Speech Synthesis (TTS) Implementation ---
@@ -1493,9 +1475,6 @@
             loading.classList.add('active');
             sendButton.disabled = true;
             micButton.disabled = true; // Disable mic during AI thinking
-
-            // Stop any ongoing speech from a previous response when a new message is sent
-            stopSpeech();
 
             try {
                 const model = document.getElementById('modelSelect').value;
