@@ -8,7 +8,7 @@
     <style>
         :root {
             --primary-gradient-start: #7c4dff; /* Deeper, richer purple */
-            --primary-gradient-end: #5b3ac2;   /* Complementary dark purple */
+            --primary-gradient-end: #5b3ac2; /* Complementary dark purple */
             --primary-color: #7c4dff;
             --accent-color: #5b3ac2;
             --background-light: #f8f9fa; /* Slightly lighter background */
@@ -111,6 +111,31 @@
         .settings-toggle:hover {
             background: rgba(255, 255, 255, 0.45);
             transform: translateY(-3px); /* More pronounced lift */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .mode-toggle {
+            position: absolute;
+            top: 25px;
+            left: 25px;
+            background: rgba(255, 255, 255, 0.3);
+            border: none;
+            color: white;
+            padding: 12px 18px;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+            transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .mode-toggle:hover {
+            background: rgba(255, 255, 255, 0.45);
+            transform: translateY(-3px);
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
         }
 
@@ -595,6 +620,24 @@
             font-style: italic;
         }
 
+        /* Mode-specific display */
+        .text-mode .mic-button {
+            display: none;
+        }
+
+        .text-mode .message-input,
+        .text-mode .send-button {
+            display: flex; /* Or block, inline-block depending on layout */
+        }
+
+        .speech-mode .message-input,
+        .speech-mode .send-button {
+            display: none;
+        }
+
+        .speech-mode .mic-button {
+            display: flex; /* Or block, inline-block */
+        }
 
         @media (max-width: 768px) {
             body {
@@ -621,6 +664,13 @@
             .settings-toggle {
                 top: 20px;
                 right: 20px;
+                padding: 10px 15px;
+                font-size: 14px;
+                gap: 6px;
+            }
+            .mode-toggle {
+                top: 20px;
+                left: 20px;
                 padding: 10px 15px;
                 font-size: 14px;
                 gap: 6px;
@@ -707,6 +757,10 @@
                 font-size: 12px;
                 padding: 6px 10px;
             }
+            .mode-toggle {
+                font-size: 12px;
+                padding: 6px 10px;
+            }
             .message-input {
                 font-size: 14px;
                 padding: 12px 18px;
@@ -743,6 +797,7 @@
             <h1>🤖 Indicore AI - Chatbot</h1>
             <p>Powered with Indic Languages</p>
             <button class="settings-toggle" onclick="toggleSettings()">⚙️ Settings</button>
+            <button class="mode-toggle" id="modeToggle" onclick="toggleMode()">💬 Text Mode</button>
         </div>
 
         <div class="settings-panel" id="settingsPanel">
@@ -789,7 +844,7 @@
 
                 <div class="form-group">
                     <label for="enableSpeech">
-                        <input type="checkbox" id="enableSpeech">
+                        <input type="checkbox" id="enableSpeech" disabled>
                         <span id="enableSpeechLabel">Enable Speech Responses</span>
                     </label>
                 </div>
@@ -860,7 +915,7 @@
                 close: "Close",
                 thinking: "🤖 AI is thinking...",
                 languageName: "English",
-                enableSpeech: "Enable Speech Responses",
+                enableSpeech: "Enable Speech Responses (Auto-enabled in Speech Mode)",
                 voiceInput: "Voice Input",
                 startListening: "Start Listening",
                 stopListening: "Stop Listening",
@@ -869,10 +924,12 @@
                 voiceStatusReady: "Ready to send. Click 'Send' to continue.",
                 voiceStatusError: "Error occurred. Please try again.",
                 transcriptionPlaceholder: "Your speech will appear here...",
-                stopSpeech: "🔇 Stop Speech"
+                stopSpeech: "🔇 Stop Speech",
+                textMode: "💬 Text Mode",
+                speechMode: "🎤 Speech Mode"
             },
             hi: {
-                welcome: "👋 स्वागत है! मैं Indicore AI, आपका बहुभाषी AI सहायक हूँ",
+                welcome: "👋 स्वागत है! मैं Indicore AI, आपका बहुभाषी AI सहायक हूँ। इच्छित भाषा का चयन करने के लिए सेटिंग्स खोलें।",
                 settings: "सेटिंग्स",
                 model: "AI मॉडल",
                 systemPrompt: "सिस्टम संकेत",
@@ -883,7 +940,7 @@
                 close: "बंद करें",
                 thinking: "🤖 AI सोच रहा है...",
                 languageName: "Hindi",
-                enableSpeech: "भाषण प्रतिक्रियाएँ सक्षम करें",
+                enableSpeech: "भाषण प्रतिक्रियाएँ सक्षम करें (स्पीच मोड में स्वतः-सक्षम)",
                 voiceInput: "आवाज़ इनपुट",
                 startListening: "सुनना शुरू करें",
                 stopListening: "सुनना बंद करें",
@@ -893,11 +950,13 @@
                 voiceStatusError: "त्रुटि हुई। कृपया पुनः प्रयास करें।",
                 transcriptionPlaceholder: "आपका भाषण यहाँ दिखाई देगा...",
                 stopSpeech: "🔇 भाषण बंद करें",
-                errorNoMessage: "कृपया एक संदेश दर्ज करें"
+                errorNoMessage: "कृपया एक संदेश दर्ज करें",
+                textMode: "💬 टेक्स्ट मोड",
+                speechMode: "🎤 स्पीच मोड"
             },
             mr: {
-                welcome: "👋 स्वागत आहे! मी Indicore AI, तुमचा बहुभाषी AI सहाय्यक आहे",
-                settings: " सेटिंग्ज",
+                welcome: "👋 स्वागत आहे! मी Indicore AI, तुमचा बहुभाषी AI सहाय्यक आहे। इच्छित भाषा निवडण्यासाठी सेटिंग्ज उघडा।",
+                settings: "सेटिंग्ज",
                 model: "AI मॉडेल",
                 systemPrompt: "सिस्टम सूचना",
                 inputPlaceholder: "तुमचा संदेश येथे टाइप करा...",
@@ -907,7 +966,7 @@
                 close: "बंद करा",
                 thinking: "🤖 AI विचार करत आहे...",
                 languageName: "Marathi",
-                enableSpeech: "भाषण प्रतिसाद सक्षम करा",
+                enableSpeech: "भाषण प्रतिसाद सक्षम करा (स्पीच मोडमध्ये स्वयं-सक्षम)",
                 voiceInput: "आवाज इनपुट",
                 startListening: "ऐकणे सुरू करा",
                 stopListening: "ऐकणे बंद करा",
@@ -917,11 +976,13 @@
                 voiceStatusError: "त्रुटी झाली. कृपया पुन्हा प्रयत्न करा।",
                 transcriptionPlaceholder: "तुमचे भाषण येथे दिसेल...",
                 stopSpeech: "🔇 भाषण थांबवा",
-                errorNoMessage: "कृपया एक संदेश प्रविष्ट करा"
+                errorNoMessage: "कृपया एक संदेश प्रविष्ट करा",
+                textMode: "💬 मजकूर मोड",
+                speechMode: "🎤 स्पीच मोड"
             },
             ta: {
-                welcome: "👋 வரவேற்கிறேன்! நான் Indicore AI, உங்கள் பல்மொழி AI உதவியாளர்",
-                settings: " அமைப்புகள்",
+                welcome: "👋 வரவேற்கிறேன்! நான் Indicore AI, உங்கள் பல்மொழி AI உதவியாளர்। விரும்பிய மொழியைத் தேர்ந்தெடுக்க அமைப்புகளைத் திறக்கவும்।",
+                settings: "அமைப்புகள்",
                 model: "AI மாதிரி",
                 systemPrompt: "அமைப்பு குறிப்பு",
                 inputPlaceholder: "உங்கள் செய்தியை இங்கே தட்டச்சு செய்யவும்...",
@@ -931,7 +992,7 @@
                 close: "மூடு",
                 thinking: "🤖 AI சிந்திக்கிறது...",
                 languageName: "Tamil",
-                enableSpeech: "பேச்சு பதில்களை இயக்கு",
+                enableSpeech: "பேச்சு பதில்களை இயக்கு (பேச்சு முறையில் தானாக இயக்கப்பட்டிருக்கும்)",
                 voiceInput: "குரல் உள்ளீடு",
                 startListening: "கேட்க ஆரம்பிக்கவும்",
                 stopListening: "கேட்பதை நிறுத்தவும்",
@@ -941,10 +1002,12 @@
                 voiceStatusError: "பிழை ஏற்பட்டது. தயவுசெய்து மீண்டும் முயற்சிக்கவும்।",
                 transcriptionPlaceholder: "உங்கள் பேச்சு இங்கே தோன்றும்...",
                 stopSpeech: "🔇 பேச்சை நிறுத்து",
-                errorNoMessage: "தயவுசெய்து ஒரு செய்தியை உள்ளிடவும்"
+                errorNoMessage: "தயவுசெய்து ஒரு செய்தியை உள்ளிடவும்",
+                textMode: "💬 உரை முறை",
+                speechMode: "🎤 பேச்சு முறை"
             },
             bn: {
-                welcome: "👋 স্বাগতম! আমি Indicore AI, আপনার বহুভাষিক AI সহকারী",
+                welcome: "👋 স্বাগতম! আমি Indicore AI, আপনার বহুভাষিক AI সহকারী। পছন্দসই ভাষা নির্বাচন করতে সেটিংস খুলুন।",
                 settings: "সেটিংস",
                 model: "AI মডেল",
                 systemPrompt: "সিস্টেম প্রম্পট",
@@ -955,7 +1018,7 @@
                 close: "বন্ধ",
                 thinking: "🤖 AI চিন্তা করছে...",
                 languageName: "Bengali",
-                enableSpeech: "বক্তৃতা প্রতিক্রিয়া সক্ষম করুন",
+                enableSpeech: "বক্তৃতা প্রতিক্রিয়া সক্ষম করুন (স্পিচ মোডে স্বয়ংক্রিয়ভাবে সক্ষম)",
                 voiceInput: "ভয়েস ইনপুট",
                 startListening: "শোনা শুরু করুন",
                 stopListening: "শোনা বন্ধ করুন",
@@ -965,11 +1028,13 @@
                 voiceStatusError: "ত্রুটি ঘটেছে। অনুগ্রহ করে আবার চেষ্টা করুন।",
                 transcriptionPlaceholder: "আপনার বক্তৃতা এখানে প্রদর্শিত হবে...",
                 stopSpeech: "🔇 বক্তৃতা বন্ধ করুন",
-                errorNoMessage: "অনুগ্রহ করে একটি বার্তা লিখুন"
+                errorNoMessage: "অনুগ্রহ করে একটি বার্তা লিখুন",
+                textMode: "💬 টেক্সট মোড",
+                speechMode: "🎤 স্পিচ মোড"
             },
             pa: {
-                welcome: "👋 ਜੀ ਆਇਆਂ ਨੂੰ! ਮੈਂ Indicore AI, ਤੁਹਾਡਾ ਬਹੁ-ਭਾਸ਼ੀ AI ਸਹਾਇਕ ਹਾਂ",
-                settings: " ਸੈਟਿੰਗਾਂ",
+                welcome: "👋 ਜੀ ਆਇਆਂ ਨੂੰ! ਮੈਂ Indicore AI, ਤੁਹਾਡਾ ਬਹੁ-ਭਾਸ਼ੀ AI ਸਹਾਇਕ ਹਾਂ। ਲੋੜੀਂਦੀ ਭਾਸ਼ਾ ਚੁਣਨ ਲਈ ਸੈਟਿੰਗਾਂ ਖੋਲ੍ਹੋ।",
+                settings: "ਸੈਟਿੰਗਾਂ",
                 model: "AI ਮਾਡਲ",
                 systemPrompt: "ਸਿਸਟਮ ਪ੍ਰੋਮਪਟ",
                 inputPlaceholder: "ਆਪਣਾ ਸੁਨੇਹਾ ਇੱਥੇ ਲਿਖੋ...",
@@ -979,7 +1044,7 @@
                 close: "ਬੰਦ ਕਰੋ",
                 thinking: "🤖 AI ਸੋਚ ਰਿਹਾ ਹੈ...",
                 languageName: "Punjabi",
-                enableSpeech: "ਬੋਲਣ ਵਾਲੇ ਜਵਾਬ ਸਮਰੱਥ ਕਰੋ",
+                enableSpeech: "ਬੋਲਣ ਵਾਲੇ ਜਵਾਬ ਸਮਰੱਥ ਕਰੋ (ਸਪੀਚ ਮੋਡ ਵਿੱਚ ਸਵੈਚਾਲਤ ਸਮਰੱਥ)",
                 voiceInput: "ਆਵਾਜ਼ ਇਨਪੁਟ",
                 startListening: "ਸੁਣਨਾ ਸ਼ੁਰੂ ਕਰੋ",
                 stopListening: "ਸੁਣਨਾ ਬੰਦ ਕਰੋ",
@@ -989,10 +1054,12 @@
                 voiceStatusError: "ਗਲਤੀ ਹੋਈ। ਕਿਰਪਾ ਕਰਕੇ ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੋ।",
                 transcriptionPlaceholder: "ਤੁਹਾਡਾ ਭਾਸ਼ਣ ਇੱਥੇ ਦਿਖਾਈ ਦੇਵੇਗਾ...",
                 stopSpeech: "🔇 ਬੋਲਣਾ ਬੰਦ ਕਰੋ",
-                errorNoMessage: "ਕਿਰਪਾ ਕਰਕੇ ਇੱਕ ਸੁਨੇਹਾ ਦਰਜ ਕਰੋ"
+                errorNoMessage: "ਕਿਰਪਾ ਕਰਕੇ ਇੱਕ ਸੁਨੇਹਾ ਦਰਜ ਕਰੋ",
+                textMode: "💬 ਟੈਕਸਟ ਮੋਡ",
+                speechMode: "🎤 ਸਪੀਚ ਮੋਡ"
             },
             gu: {
-                welcome: "👋 સ્વાગત છે! હું Indicore AI, તમારો બહુભાષી AI સહાયક છું",
+                welcome: "👋 સ્વાગત છે! હું Indicore AI, તમારો બહુભાષી AI સહાયક છું। ઇચ્છિત ભાષા પસંદ કરવા માટે સેટિંગ્સ ખોલો।",
                 settings: "સેટિંગ્સ",
                 model: "AI મોડેલ",
                 systemPrompt: "સિસ્ટમ પ્રોમ્પ્ટ",
@@ -1003,7 +1070,7 @@
                 close: "બંધ કરો",
                 thinking: "🤖 AI વિચારી રહ્યું છે...",
                 languageName: "Gujarati",
-                enableSpeech: "વાણી પ્રતિસાદ સક્ષમ કરો",
+                enableSpeech: "વાણી પ્રતિસાદ સક્ષમ કરો (સ્પીચ મોડમાં સ્વતઃ સક્ષમ)",
                 voiceInput: "વૉઇસ ઇનપુટ",
                 startListening: "સાંભળવાનું શરૂ કરો",
                 stopListening: "સાંભળવાનું બંધ કરો",
@@ -1013,7 +1080,9 @@
                 voiceStatusError: "ભૂલ થઈ. કૃપા કરીને ફરીથી પ્રયાસ કરો।",
                 transcriptionPlaceholder: "તમારું ભાષણ અહીં દેખાશે...",
                 stopSpeech: "🔇 ભાષણ બંધ કરો",
-                errorNoMessage: "કૃપા કરીને એક સંદેશ દાખલ કરો"
+                errorNoMessage: "કૃપા કરીને એક સંદેશ દાખલ કરો",
+                textMode: "💬 ટેક્સ્ટ મોડ",
+                speechMode: "🎤 સ્પીચ મોડ"
             }
         };
 
@@ -1062,7 +1131,11 @@
         const voiceStatus = document.getElementById('voiceStatus');
         const transcription = document.getElementById('transcription');
         const messageInput = document.getElementById('messageInput');
+        const sendButton = document.getElementById('sendButton'); // Added for direct access
         const stopSpeechButton = document.getElementById('stopSpeechButton');
+        const chatContainer = document.querySelector('.chat-container'); // To add/remove mode classes
+        const modeToggle = document.getElementById('modeToggle'); // New mode toggle button
+        const enableSpeechCheckbox = document.getElementById('enableSpeech'); // Checkbox for speech responses
 
         // Azure Speech Recognition setup
         let azureSpeechConfig = null;
@@ -1071,6 +1144,7 @@
         let finalTranscriptText = '';
         let isSpeaking = false; // Tracks if Azure TTS is currently speaking
         let azureSynthesizer = null; // Azure Speech Synthesizer instance
+        let currentChatMode = 'text-to-text'; // Default mode
 
         // Azure Speech Recognition class
         class AzureSpeechRecognizer {
@@ -1330,8 +1404,8 @@
             
             // Construct SSML for better control over voice and language
             const ssml = `<speak version="1.0" xmlns="http://www.w3.org/2001/10/synthesis" xml:lang="${azureLangCode}">
-                            <voice name="${voiceName}">${text}</voice>
-                          </speak>`;
+                                <voice name="${voiceName}">${text}</voice>
+                            </speak>`;
 
             console.log("Attempting Azure TTS with SSML:", ssml); // Log the SSML being sent
 
@@ -1397,6 +1471,9 @@
 
             document.getElementById('stopSpeechButton').innerHTML = `🔇 ${t.stopSpeech}`;
             
+            // Update mode toggle button text
+            modeToggle.innerHTML = currentChatMode === 'text-to-text' ? `💬 ${t.textMode}` : `🎤 ${t.speechMode}`;
+
             updateWelcomeMessage(lang);
         }
 
@@ -1413,7 +1490,8 @@
                 model: document.getElementById('modelSelect').value,
                 systemPrompt: document.getElementById('systemPrompt').value,
                 language: document.getElementById('languageSelect').value,
-                enableSpeech: document.getElementById('enableSpeech').checked
+                enableSpeech: document.getElementById('enableSpeech').checked,
+                chatMode: currentChatMode // Save the current mode
             };
             localStorage.setItem('indicoreSettings', JSON.stringify(settings));
         }
@@ -1425,13 +1503,20 @@
                 document.getElementById('modelSelect').value = settings.model || 'sonar-pro';
                 document.getElementById('systemPrompt').value = settings.systemPrompt || 'You are a helpful Multilingual AI assistant. Provide accurate, detailed, and well-structured responses.';
                 document.getElementById('languageSelect').value = settings.language || 'en';
-                document.getElementById('enableSpeech').checked = settings.enableSpeech || false;
+                // Speech checkbox is now managed by mode, so its saved state is only relevant for initial setup if no mode is saved.
+                // For now, let's keep it disabled and managed by the mode toggle.
+                // document.getElementById('enableSpeech').checked = settings.enableSpeech || false;
+                
+                currentChatMode = settings.chatMode || 'text-to-text'; // Load the saved mode
+                
                 updateInterface(settings.language || 'en');
+                applyChatMode(currentChatMode); // Apply the loaded mode immediately
                 
                 const modelInfo = document.getElementById('modelInfo');
                 modelInfo.textContent = modelDescriptions[settings.model || 'sonar-pro'];
             } else {
                 addMessage(translations['en'].welcome, false);
+                applyChatMode('text-to-text'); // Default to text mode if no settings found
             }
         }
 
@@ -1439,6 +1524,56 @@
             const panel = document.getElementById('settingsPanel');
             panel.classList.toggle('active');
             saveSettings();
+        }
+
+        function toggleMode() {
+            if (currentChatMode === 'text-to-text') {
+                currentChatMode = 'speech-to-speech';
+                // For speech-to-speech mode, speech responses are automatically enabled
+                enableSpeechCheckbox.checked = true;
+                enableSpeechCheckbox.disabled = true; // Disable manual toggle
+            } else {
+                currentChatMode = 'text-to-text';
+                // For text-to-text mode, speech responses can be disabled
+                enableSpeechCheckbox.checked = false; // Reset speech response checkbox
+                enableSpeechCheckbox.disabled = true; // Still disabled as speech to speech now dictates it
+            }
+            saveSettings();
+            applyChatMode(currentChatMode);
+            updateInterface(document.getElementById('languageSelect').value); // Update button text
+        }
+
+        function applyChatMode(mode) {
+            const chatContainer = document.querySelector('.chat-container');
+            if (mode === 'text-to-text') {
+                chatContainer.classList.remove('speech-mode');
+                chatContainer.classList.add('text-mode');
+                messageInput.style.display = 'block';
+                sendButton.style.display = 'flex';
+                micButton.style.display = 'none';
+                voiceDialog.style.display = 'none'; // Ensure dialog is hidden
+                // Stop any ongoing speech recognition if switching from speech mode
+                if (azureSpeechRecognizer.isListening) {
+                    azureSpeechRecognizer.stopRecognition();
+                }
+            } else { // speech-to-speech
+                chatContainer.classList.remove('text-mode');
+                chatContainer.classList.add('speech-mode');
+                messageInput.style.display = 'none';
+                sendButton.style.display = 'none';
+                micButton.style.display = 'flex';
+                // In speech mode, immediately open the voice dialog when the mic button would normally be clicked
+                // micButton.click(); // This might cause issues with direct event triggering. Better to just show it.
+                // Instead of micButton.click(), we'll show the dialog when the mode is set to speech, if needed.
+                // For now, only show it when the user explicitly clicks the mic button, even in speech mode.
+                // However, the prompt implies "speech-to-speech by just one click", meaning the mode switch
+                // itself should trigger the voice input if it's the target mode.
+                // So, let's trigger the voice dialog and start listening.
+                if (!azureSpeechRecognizer.isListening && voiceDialog.style.display !== 'flex') {
+                    voiceDialog.style.display = 'flex';
+                    azureSpeechRecognizer.startRecognition();
+                }
+            }
         }
 
         function addMessage(content, isUser) {
@@ -1540,12 +1675,13 @@
                 addMessage(aiResponse, false);
 
                 // Check if speech responses are enabled AND if the response has actual content
-                if (document.getElementById('enableSpeech').checked && aiResponse.trim().length > 0) {
+                // This now depends on the currentChatMode
+                if (currentChatMode === 'speech-to-speech' && aiResponse.trim().length > 0) {
                     speak(aiResponse, language); // Use the Azure-based speak function
-                } else if (document.getElementById('enableSpeech').checked && aiResponse.trim().length === 0) {
+                } else if (currentChatMode === 'speech-to-speech' && aiResponse.trim().length === 0) {
                     console.warn("Speech responses enabled, but AI returned empty response. Not speaking.");
                 } else {
-                    console.log("Speech responses not enabled or no content to speak.");
+                    console.log("Speech responses not enabled (in text mode) or no content to speak.");
                 }
 
             } catch (error) {
@@ -1568,21 +1704,29 @@
                 sendButton.disabled = false;
                 micButton.disabled = false; // Re-enable mic
                 messageInput.focus();
+                // If in speech mode, re-open voice dialog for next input
+                if (currentChatMode === 'speech-to-speech') {
+                    voiceDialog.style.display = 'flex';
+                    azureSpeechRecognizer.startRecognition(); // Immediately start listening again
+                }
             }
         }
 
         function handleKeyPress(event) {
-            if (event.key === 'Enter') {
+            if (event.key === 'Enter' && currentChatMode === 'text-to-text') {
                 sendMessage();
             }
         }
 
-        // Voice input event listeners
+        // Voice input event listeners (modified for mode)
         micButton.addEventListener('click', function() {
-            voiceDialog.style.display = 'flex';
-            const lang = document.getElementById('languageSelect').value;
-            document.getElementById('voiceStatus').textContent = translations[lang].voiceStatusStart;
-            resetTranscription();
+            if (currentChatMode === 'speech-to-speech') {
+                voiceDialog.style.display = 'flex';
+                const lang = document.getElementById('languageSelect').value;
+                document.getElementById('voiceStatus').textContent = translations[lang].voiceStatusStart;
+                resetTranscription();
+                azureSpeechRecognizer.startRecognition(); // Start listening automatically
+            }
         });
 
         closeDialog.addEventListener('click', function() {
@@ -1608,9 +1752,16 @@
             
             if (transcriptText && 
                 transcriptText !== translations[lang].transcriptionPlaceholder) {
-                messageInput.value = transcriptText;
-                voiceDialog.style.display = 'none';
-                sendMessage();
+                // If in speech-to-speech mode, send the voice message directly
+                // Otherwise (if somehow this button is clicked in text mode), populate input
+                if (currentChatMode === 'speech-to-speech') {
+                    messageInput.value = transcriptText; // Temporarily put transcript into input for sendMessage logic
+                    voiceDialog.style.display = 'none'; // Hide dialog
+                    sendMessage(); // Send the message
+                } else {
+                    messageInput.value = transcriptText;
+                    voiceDialog.style.display = 'none';
+                }
                 
                 finalTranscriptText = '';
                 resetTranscription();
@@ -1630,6 +1781,12 @@
             saveSettings();
         });
 
+        // Event listener for the enableSpeech checkbox - keep it disabled and let mode manage it
+        enableSpeechCheckbox.addEventListener('click', (event) => {
+            event.preventDefault(); // Prevent direct interaction
+            console.log("Enable Speech Responses checkbox is managed by chat mode and cannot be changed directly.");
+        });
+
         // Initialization
         document.addEventListener('DOMContentLoaded', async function() {
             loadSettings();
@@ -1639,9 +1796,12 @@
                 console.error('Azure Speech SDK not loaded');
                 document.getElementById('voiceStatus').textContent = 'Azure Speech SDK not loaded. Voice input and output disabled.';
                 micButton.disabled = true;
-                document.getElementById('enableSpeech').disabled = true;
+                enableSpeechCheckbox.disabled = true; // Ensure disabled
             } else {
                 initializeAzureSynthesizer(); 
+                // Enable mic button if SDK is loaded, regardless of initial mode.
+                // Its visibility will be controlled by applyChatMode.
+                micButton.disabled = false; 
             }
         });
     </script>
