@@ -885,6 +885,102 @@
                 font-size: 12px;
                 padding: 8px 12px;
             }
+            /* ADD THIS CSS AT THE END OF YOUR EXISTING STYLE SECTION */
+            /* Monitoring Dashboard Styles */
+            .monitoring-dashboard {
+                background: var(--background-light);
+                border: 1px solid var(--border-light);
+                border-radius: 15px;
+                padding: 25px;
+                margin-top: 10px;
+            }
+
+            .monitoring-dashboard .stat-card {
+                background: var(--background-card);
+                border: 1px solid var(--border-light);
+                border-radius: 12px;
+                padding: 20px;
+                text-align: center;
+                box-shadow: 0 3px 8px var(--shadow-light);
+                margin-bottom: 15px;
+                transition: transform 0.2s ease, box-shadow 0.2s ease;
+            }
+
+            .monitoring-dashboard .stat-card:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 5px 12px var(--shadow-medium);
+            }
+
+            .stat-number {
+                font-size: 36px;
+                font-weight: 700;
+                color: var(--primary-color);
+                margin-bottom: 8px;
+                background: linear-gradient(135deg, var(--primary-gradient-start), var(--primary-gradient-end));
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+            }
+
+            .stat-label {
+                font-size: 14px;
+                color: var(--text-medium);
+                font-weight: 500;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+            }
+
+            .dashboard-actions {
+                display: flex;
+                gap: 12px;
+                justify-content: center;
+                margin-top: 20px;
+            }
+
+            .dashboard-actions button {
+                background: var(--background-card);
+                color: var(--text-dark);
+                border: 1px solid var(--border-light);
+                padding: 10px 16px;
+                border-radius: 8px;
+                cursor: pointer;
+                font-size: 14px;
+                font-weight: 500;
+                transition: all 0.2s ease;
+                box-shadow: 0 2px 5px var(--shadow-light);
+            }
+
+            .dashboard-actions button:hover {
+                background: var(--primary-color);
+                color: white;
+                border-color: var(--primary-color);
+                transform: translateY(-2px);
+                box-shadow: 0 4px 10px rgba(var(--primary-color-rgb), 0.3);
+            }
+
+            #resetCounter:hover {
+                background: var(--error-color);
+                border-color: var(--error-color);
+                box-shadow: 0 4px 10px rgba(var(--error-color-rgb), 0.3);
+            }
+
+            @media (max-width: 768px) {
+                .monitoring-dashboard {
+                    padding: 20px;
+                }
+                
+                .stat-number {
+                    font-size: 28px;
+                }
+                
+                .dashboard-actions {
+                    flex-direction: column;
+                }
+                
+                .dashboard-actions button {
+                    width: 100%;
+                }
+            }
         }
     </style>
 </head>
@@ -943,6 +1039,24 @@
                     <label>Bot Response Control</label>
                     <button id="stopBotToggle" onclick="toggleBotResponses()">🔇 Stop Bot Responses</button>
                 </div>
+                <!-- Add this section in the settings-grid div, after the Bot Response Control -->
+                <div class="form-group">
+                    <label>📊 Monitoring Dashboard</label>
+                    <div class="monitoring-dashboard">
+                        <div class="stat-card">
+                            <div class="stat-number" id="questionCount">0</div>
+                            <div class="stat-label">Questions Asked</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="sessionQuestions">0</div>
+                            <div class="stat-label">This Session</div>
+                        </div>
+                        <div class="dashboard-actions">
+                            <button id="resetCounter" onclick="resetQuestionCounter()">🔄 Reset Counter</button>
+                            <button id="exportStats" onclick="exportStats()">📋 Export Stats</button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -980,6 +1094,17 @@
     <script src="https://aka.ms/csspeech/jsbrowserpackageraw"></script>
 
     <script>
+                    // FIND YOUR EXISTING VARIABLES SECTION (usually at the top of script)
+            // It might look like:
+            // let messageInput;
+            // let chatContainer;
+            // etc...
+
+            // ADD THESE NEW VARIABLES AFTER YOUR EXISTING ONES:
+        let totalQuestionsAsked = 0;
+        let sessionQuestionsAsked = 0;
+        let sessionStartTime = Date.now();
+
         // --- CRITICAL: REPLACE WITH YOUR ACTUAL KEYS AND REGION ---
         const API_CONFIG = {
             perplexity: {
@@ -1408,6 +1533,85 @@
             }
         }
 
+        // ADD THESE FUNCTIONS ANYWHERE IN YOUR SCRIPT SECTION
+
+        function updateQuestionCounter() {
+            totalQuestionsAsked++;
+            sessionQuestionsAsked++;
+            
+            // Update display
+            document.getElementById('questionCount').textContent = totalQuestionsAsked;
+            document.getElementById('sessionQuestions').textContent = sessionQuestionsAsked;
+            
+            // Save to localStorage
+            saveQuestionStats();
+        }
+
+        function loadQuestionStats() {
+            const stats = localStorage.getItem('indicoreStats');
+            if (stats) {
+                const data = JSON.parse(stats);
+                totalQuestionsAsked = data.totalQuestions || 0;
+                sessionStartTime = Date.now();
+                sessionQuestionsAsked = 0;
+            }
+            
+            // Update display
+            document.getElementById('questionCount').textContent = totalQuestionsAsked;
+            document.getElementById('sessionQuestions').textContent = sessionQuestionsAsked;
+        }
+
+        function saveQuestionStats() {
+            const stats = {
+                totalQuestions: totalQuestionsAsked,
+                sessionQuestions: sessionQuestionsAsked,
+                lastUpdated: Date.now(),
+                sessionStartTime: sessionStartTime
+            };
+            localStorage.setItem('indicoreStats', JSON.stringify(stats));
+        }
+
+        function resetQuestionCounter() {
+            if (confirm('Are you sure you want to reset the question counter? This action cannot be undone.')) {
+                totalQuestionsAsked = 0;
+                sessionQuestionsAsked = 0;
+                sessionStartTime = Date.now();
+                
+                document.getElementById('questionCount').textContent = '0';
+                document.getElementById('sessionQuestions').textContent = '0';
+                
+                localStorage.removeItem('indicoreStats');
+                
+                addMessage('📊 Question counter has been reset successfully!', false);
+            }
+        }
+
+        function exportStats() {
+            const stats = {
+                totalQuestions: totalQuestionsAsked,
+                sessionQuestions: sessionQuestionsAsked,
+                sessionDuration: Math.round((Date.now() - sessionStartTime) / (1000 * 60)),
+                exportDate: new Date().toLocaleString(),
+                language: document.getElementById('languageSelect').value,
+                model: document.getElementById('modelSelect').value
+            };
+            
+            const dataStr = JSON.stringify(stats, null, 2);
+            const dataBlob = new Blob([dataStr], {type: 'application/json'});
+            const url = URL.createObjectURL(dataBlob);
+            
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `indicore-ai-stats-${new Date().toISOString().split('T')[0]}.json`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+            
+            addMessage('📋 Statistics exported successfully!', false);
+        }
+
+
         // Initialize Azure Speech Recognizer
         const azureSpeechRecognizer = new AzureSpeechRecognizer();
 
@@ -1765,6 +1969,7 @@
             if (currentChatMode === 'text-to-text') {
                 addMessage(message, true);
             }
+            updateQuestionCounter();
             messageInput.value = '';
 
             if (currentChatMode === 'text-to-text') {
@@ -1961,6 +2166,7 @@
 
         document.addEventListener('DOMContentLoaded', async function() {
             loadSettings(); // Load all settings including botResponsesStopped
+            loadQuestionStats();
             
             if (typeof SpeechSDK === 'undefined') {
                 console.error('Azure Speech SDK not loaded');
