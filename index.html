@@ -1835,28 +1835,6 @@
                 } else {
                     throw new Error('Invalid response format from Perplexity API');
                 }
-                // ... (after the aiResponse variable is set)
-                // --- NEW CODE FOR USAGE TRACKING ---
-                const trackingData = {
-                    userMessage: message,
-                    botResponse: aiResponse,
-                    language: language,
-                    model: model
-                };
-                
-                try {
-                    await fetch('http://localhost:8000/track-usage', { // Replace with your backend URL
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify(trackingData)
-                    });
-                    console.log('Usage data sent to backend.');
-                } catch (trackingError) {
-                    console.error('Failed to send usage data to backend:', trackingError);
-                }
-                // --- END OF NEW CODE ---
                 
                 console.log('Perplexity AI Raw Response Content:', aiResponse);
                 console.log('Selected Language for TTS:', language);
