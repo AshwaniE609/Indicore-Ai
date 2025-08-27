@@ -4,16 +4,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Indicore AI - Happy Independence Day!</title>
+    <title>Indicore AI - Happy Ganesh Chaturthi!</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-         :root {
-            /* --- Independence Day Theme --- */
-            --primary-gradient-start: #FF9933; /* Saffron */
-            --primary-gradient-end: #138808;   /* Green */
-            --primary-color: #000080;          /* Ashoka Chakra Blue */
-            --accent-color: #000060;           /* Darker Blue for hover */
-            --background-light: #fef8f0;       /* Very light saffron tint */
+        :root {
+            /* --- Ganesh Chaturthi Theme --- */
+            --primary-gradient-start: #FFA500; /* Marigold Orange */
+            --primary-gradient-end: #E53935;   /* Festive Red */
+            --primary-color: #FFC107;         /* Golden Yellow */
+            --accent-color: #DAA520;           /* Darker Gold for hover */
+            --background-light: #FFF8E1;       /* Light Cream/Yellow */
             /* --- End Theme --- */
 
             --background-card: #ffffff;
@@ -25,7 +25,7 @@
             --shadow-strong: rgba(0, 0, 0, 0.2);
             --success-color: #28a745;
             --error-color: #dc3545;
-            --primary-color-rgb: 0, 0, 128;    /* Ashoka Chakra Blue RGB */
+            --primary-color-rgb: 255, 193, 7;    /* Golden Yellow RGB */
             --error-color-rgb: 220, 53, 69;
             --success-color-rgb: 40, 167, 69;
         }
@@ -38,7 +38,10 @@
         
         body {
             font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #ffead1 0%, #d1ffe2 100%); /* Light Saffron to Light Green */
+            background: linear-gradient(rgba(255, 248, 225, 0.8), rgba(255, 236, 179, 0.8)), url('https://imgs.search.brave.com/eJu1MuMeu-gEFexylQLdwadiAHox6dSFoSARXWATreM/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9zdGF0/aWMudmVjdGVlenku/Y29tL3N5c3RlbS9y/ZXNvdXJjZXMvdGh1/bWJuYWlscy8wMjcv/MTk4LzY1Ni9zbWFs/bC9tYXJpZ29sZC1m/bG93ZXItcGF0dGVy/bmVkLWJhY2tncm91/bmQtZmxvd2VyLXRl/eHR1cmUtYmFja2dy/b3VuZC1nZW5lcmF0/aXZlLWFpLXBob3Rv/LmpwZw');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
             min-height: 100vh;
             display: flex;
             justify-content: center;
@@ -46,11 +49,41 @@
             padding: 20px;
             color: var(--text-dark);
             overflow: hidden;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 150px;
+            height: 150px;
+            background-image: url('');
+            background-size: contain;
+            background-repeat: no-repeat;
+            opacity: 0.5;
+        }
+
+        body::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 150px;
+            height: 150px;
+            background-image: url('https://www.pngmart.com/files/10/Marigold-Flower-PNG-Clipart.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            opacity: 0.5;
+            transform: scaleX(-1);
         }
         
         .chat-container {
-            background: var(--background-card);
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
             border-radius: 28px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
             box-shadow: 0 20px 50px var(--shadow-strong);
             width: 100%;
             max-width: 900px;
@@ -78,13 +111,26 @@
         .header {
             background: linear-gradient(135deg, var(--primary-gradient-start) 0%, var(--primary-gradient-end) 100%);
             color: white;
-            padding: 30px;
+            padding: 20px 30px;
             text-align: center;
             position: relative;
             box-shadow: 0 4px 15px var(--shadow-medium);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .header-icon {
+            width: 50px;
+            height: auto;
+            /*margin-bottom: 10px; */
         }
         
         .header h1 {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px; /* Adjust space between icon and text */
             font-size: 32px;
             margin-bottom: 8px;
             font-weight: 700;
@@ -267,7 +313,7 @@
             flex: 1;
             padding: 30px;
             overflow-y: auto;
-            background: var(--background-light);
+            background: transparent;
             display: flex;
             flex-direction: column;
             gap: 20px;
@@ -346,7 +392,7 @@
         
         .input-container {
             padding: 25px 30px;
-            background: var(--background-card);
+            background: rgba(255, 255, 255, 0.7);
             border-top: 1px solid var(--border-light);
             display: flex;
             gap: 15px;
@@ -986,9 +1032,10 @@
 <body>
     <div class="chat-container">
         <div class="header">
-            <h1>Indicore AI </h1>
-            <h2>🇮🇳 Happy 79th Independence Day!</h2>
-            <p>Celebrating Freedom in Every Indian Language</p>
+            <!-- <img src="https://www.pngmart.com/files/22/Ganesha-PNG-HD-Isolated.png" alt="Ganesha Icon" class="header-icon"> -->
+            <h1>  <img src="https://www.pngmart.com/files/22/Ganesha-PNG-HD-Isolated.png" alt="Ganesha Icon" class="header-icon"> Indicore AI</h1>
+            <h2>🕉️ Happy Ganesh Chaturthi!</h2>
+            <p>Wishing you joy, prosperity, and blessings!</p>
             <button class="settings-toggle" onclick="toggleSettings()">⚙️ Settings</button>
             <button class="mode-toggle" id="modeToggle" onclick="toggleMode()">💬 Text Mode</button>
         </div>
@@ -1116,14 +1163,14 @@
         // Enhanced translations object with Gujarati support
         const translations = {
             en: {
-                welcome: "🇮🇳This 79th Independence Day, we’re celebrating India’s voices with our multi-lingual chatbot as a prototype which we built recently with an initiative to bring and scale innovation in indic languages. Celebrate today in your mother tongue. We currently support 9 Indian languages. Proudly Indian. Natively Multilingual! Try Open Settings to select your desired language.",
+                welcome: "🕉️ Happy Ganesh Chaturthi! May Lord Ganesha bless you with wisdom, prosperity, and good fortune. Feel free to ask me anything in your preferred language.",
                 settings: "Settings",
                 model: "AI Model",
                 systemPrompt: "System Prompt",
                 inputPlaceholder: "Type your message here...",
                 send: "Send",
                 errorNoMessage: "Please enter a message",
-                powered: "Celebrating Freedom in Every Indian Language",
+                powered: "Wishing you joy, prosperity, and blessings!",
                 language: "Language",
                 close: "Close",
                 thinking: "🤖 AI is thinking...",
@@ -1143,13 +1190,13 @@
                 stopBotResponseButtonText: "Stop Bot Speaking"
             },
             hi: {
-                welcome: "🇮🇳 स्वतंत्रता दिवस की शुभकामनाएँ! मैं Indicore AI, आपका बहुभाषी AI सहायक हूँ। इच्छित भाषा का चयन करने के लिए सेटिंग्स खोलें।",
+                welcome: "🕉️ गणेश चतुर्थी की हार्दिक शुभकामनाएँ! भगवान गणेश आपको ज्ञान, समृद्धि और सौभाग्य का आशीर्वाद दें। अपनी पसंदीदा भाषा में मुझसे कुछ भी पूछें।",
                 settings: "सेटिंग्स",
                 model: "AI मॉडल",
                 systemPrompt: "सिस्टम संकेत",
                 inputPlaceholder: "अपना संदेश यहाँ टाइप करें...",
                 send: "भेजें",
-                powered: "हर भारतीय भाषा में स्वतंत्रता का जश्न",
+                powered: "आपको सुख, समृद्धि और आशीर्वाद की शुभकामनाएँ!",
                 language: "भाषा",
                 close: "बंद करें",
                 thinking: "🤖 AI सोच रहा है...",
@@ -1170,13 +1217,13 @@
                 stopBotResponseButtonText: "बॉट को बोलना बंद करें"
             },
             mr: {
-                welcome: "🇮🇳 स्वातंत्र्यदिनाच्या हार्दिक शुभेच्छा! मी Indicore AI, तुमचा बहुभाषी AI सहाय्यक आहे. इच्छित भाषा निवडण्यासाठी सेटिंग्ज उघडा.",
+                welcome: "🕉️ गणेश चतुर्थीच्या हार्दिक शुभेच्छा! गणपती बाप्पा तुम्हाला बुद्धी, समृद्धी आणि सौभाग्य देवो. तुमच्या आवडत्या भाषेत मला काहीही विचारा.",
                 settings: "सेटिंग्ज",
                 model: "AI मॉडेल",
                 systemPrompt: "सिस्टम सूचना",
                 inputPlaceholder: "तुमचा संदेश येथे टाइप करा...",
                 send: "पाठवा",
-                powered: "प्रत्येक भारतीय भाषेत स्वातंत्र्याचा उत्सव",
+                powered: "तुम्हाला सुख, समृद्धी आणि आशीर्वादांची शुभेच्छा!",
                 language: "भाषा",
                 close: "बंद करा",
                 thinking: "🤖 AI विचार करत आहे...",
@@ -1197,13 +1244,13 @@
                 stopBotResponseButtonText: "बॉटला बोलणे थांबवा"
             },
             ta: {
-                welcome: "🇮🇳 சுதந்திர தின வாழ்த்துக்கள்! நான் Indicore AI, உங்கள் பல்மொழி AI உதவியாளர். விரும்பிய மொழியைத் தேர்ந்தெடுக்க அமைப்புகளைத் திறக்கவும்.",
+                welcome: "🕉️ விநாயகர் சதுர்த்தி வாழ்த்துக்கள்! விநாயகப் பெருமான் உங்களுக்கு ஞானம், செழிப்பு மற்றும் நல்ல அதிர்ஷ்டத்தை வழங்கட்டும். உங்களுக்கு விருப்பமான மொழியில் என்னிடம் எதையும் கேட்கலாம்.",
                 settings: "அமைப்புகள்",
                 model: "AI மாதிரி",
                 systemPrompt: "அமைப்பு குறிப்பு",
                 inputPlaceholder: "உங்கள் செய்தியை இங்கே தட்டச்சு செய்யவும்...",
                 send: "அனுப்பு",
-                powered: "ஒவ்வொரு இந்திய மொழியிலும் சுதந்திரத்தைக் கொண்டாடுகிறோம்",
+                powered: "உங்களுக்கு மகிழ்ச்சி, செழிப்பு மற்றும் ஆசீர்வாதங்கள் கிடைக்க வாழ்த்துக்கள்!",
                 language: "மொழி",
                 close: "மூடு",
                 thinking: "🤖 AI சிந்திக்கிறது...",
@@ -1224,20 +1271,20 @@
                 stopBotResponseButtonText: "பாட் பேசுவதை நிறுத்து"
             },
             bn: {
-                welcome: "🇮🇳 স্বাধীনতা দিবসের শুভেচ্ছা! আমি Indicore AI, আপনার বহুভাষিক AI সহকারী। পছন্দসই ভাষা নির্বাচন করতে সেটিংস খুলুন।",
+                welcome: "🕉️ গণেশ চতুর্থীর শুভেচ্ছা! ভগবান গণেশ আপনাকে জ্ঞান, সমৃদ্ধি এবং সৌভাগ্য দিয়ে আশীর্বাদ করুন। আপনার পছন্দের ভাষায় আমাকে কিছু জিজ্ঞাসা করুন।",
                 settings: "সেটিংস",
                 model: "AI মডেল",
                 systemPrompt: "সিস্টেম প্রম্পট",
                 inputPlaceholder: "এখানে আপনার বার্তা টাইপ করুন...",
                 send: "পাঠান",
-                powered: "প্রতিটি ভারতীয় ভাষায় স্বাধীনতা উদযাপন",
+                powered: "আপনার জন্য আনন্দ, সমৃদ্ধি এবং আশীর্বাদ কামনা করছি!",
                 language: "ভাষা",
                 close: "বন্ধ",
                 thinking: "🤖 AI চিন্তা করছে...",
                 languageName: "Bengali",
                 voiceInput: "ভয়েস ইনপুট",
                 startListening: "শোনা শুরু করুন",
-                stopListening: "শোনা বন্ধ করুন",
+                stopListening: "שোনা বন্ধ করুন",
                 voiceStatusStart: "কথা বলা শুরু করতে \"שোনা শুরু করুন\" এ ক্লিক করুন...",
                 voiceStatusListening: "শুনছে... এখন বলুন।",
                 voiceStatusReady: "পাঠানোর জন্য প্রস্তুত। চালিয়ে যেতে 'পাঠান' এ ক্লিক করুন।",
@@ -1251,13 +1298,13 @@
                 stopBotResponseButtonText: "বটকে কথা বলা বন্ধ করুন"
             },
             pa: {
-                welcome: "🇮🇳 ਅਜ਼ਾਦੀ ਦਿਵਸ ਮੁਬਾਰਕ! ਮੈਂ Indicore AI, ਤੁਹਾਡਾ ਬਹੁ-ਭਾਸ਼ੀ AI ਸਹਾਇਕ ਹਾਂ। ਲੋੜੀਂਦੀ ਭਾਸ਼ਾ ਚੁਣਨ ਲਈ ਸੈਟਿੰਗਾਂ ਖੋਲ੍ਹੋ।",
+                welcome: "🕉️ ਗਣੇਸ਼ ਚਤੁਰਥੀ ਦੀਆਂ ਮੁਬਾਰਕਾਂ! ਭਗਵਾਨ ਗਣੇਸ਼ ਤੁਹਾਨੂੰ ਬੁੱਧੀ, ਖੁਸ਼ਹਾਲੀ ਅਤੇ ਚੰਗੀ ਕਿਸਮਤ ਦਾ ਆਸ਼ੀਰਵਾਦ ਦੇਣ। ਆਪਣੀ ਪਸੰਦੀਦਾ ਭਾਸ਼ਾ ਵਿੱਚ ਮੈਨੂੰ ਕੁਝ ਵੀ ਪੁੱਛੋ।",
                 settings: "ਸੈਟਿੰਗਾਂ",
                 model: "AI ਮਾਡਲ",
                 systemPrompt: "ਸਿਸਟਮ ਪ੍ਰੋਮਪਟ",
                 inputPlaceholder: "ਆਪਣਾ ਸੁਨੇਹਾ ਇੱਥੇ ਲਿਖੋ...",
                 send: "ਭੇਜੋ",
-                powered: "ਹਰ ਭਾਰਤੀ ਭਾਸ਼ਾ ਵਿੱਚ ਆਜ਼ਾਦੀ ਦਾ ਜਸ਼ਨ",
+                powered: "ਤੁਹਾਨੂੰ ਖੁਸ਼ੀ, ਖੁਸ਼ਹਾਲੀ ਅਤੇ ਅਸ਼ੀਰਵਾਦ ਦੀ ਕਾਮਨਾ ਕਰਦਾ ਹਾਂ!",
                 language: "ਭਾਸ਼ਾ",
                 close: "ਬੰਦ ਕਰੋ",
                 thinking: "🤖 AI ਸੋਚ ਰਿਹਾ ਹੈ...",
@@ -1278,13 +1325,13 @@
                 stopBotResponseButtonText: "ਬੋਟ ਨੂੰ ਬੋਲਣਾ ਬੰਦ ਕਰੋ"
             },
             gu: {
-                welcome: "🇮🇳 સ્વતંત્રતા દિવસની શુભકામનાઓ! હું Indicore AI, તમારો બહુભાષી AI સહાયક છું। ઇચ્છિત ભાષા પસંદ કરવા માટે સેટિંગ્સ ખોલો।",
+                welcome: "🕉️ ਗણેશ ચતુર્થીની હાર્દિક શુભેચ્છાઓ! ભગવાન ગણેશ તમને જ્ઞાન, સમૃદ્ધિ અને સૌભાગ્યના આશીર્વાદ આપે। તમારી પસંદગીની ભાષામાં મને કંઈપણ પૂછો।",
                 settings: "સેટિંગ્સ",
                 model: "AI મોડેલ",
                 systemPrompt: "સિસ્ટમ પ્રોમ્પ્ટ",
                 inputPlaceholder: "તમારો સંદેશ અહીં લખો...",
                 send: "મોકલો",
-                powered: "દરેક ભારતીય ભાષામાં સ્વતંત્રતાની ઉજવણી",
+                powered: "તમને આનંદ, સમૃદ્ધિ અને આશીર્વાદની શુભેચ્છાઓ!",
                 language: "ભાષા",
                 close: "બંધ કરો",
                 thinking: "🤖 AI વિચારી રહ્યું છે...",
@@ -1305,13 +1352,13 @@
                 stopBotResponseButtonText: "બોટને બોલવાનું બંધ કરો"
             },
             te: {
-                welcome: "🇮🇳 స్వాతంత్ర్య దినోత్సవ శుభాకాంక్షలు! నేను ఇండికోర్ AI, మీ బహుభాషా AI సహాయకుడిని. మీకు కావలసిన భాషను ఎంచుకోవడానికి సెట్టింగ్స్ తెరవండి.",
+                welcome: "🕉️ వినాయక చవితి శుభాకాంక్షలు! గణేశుడు మీకు జ్ఞానం, శ్రేయస్సు మరియు అదృష్టాన్ని ప్రసాదించుగాక. మీకు ఇష్టమైన భాషలో నన్ను ఏదైనా అడగండి.",
                 settings: "సెట్టింగ్స్",
                 model: "AI మోడల్",
                 systemPrompt: "సిస్టమ్ ప్రాంప్ట్",
                 inputPlaceholder: "మీ సందేశాన్ని ఇక్కడ టైప్ చేయండి...",
                 send: "పంపించు",
-                powered: "ప్రతి భారతీయ భాషలో స్వాతంత్ర్య వేడుకలు",
+                powered: "మీకు ఆనందం, శ్రేయస్సు మరియు ఆశీస్సులు కలగాలని కోరుకుంటున్నాను!",
                 language: "భాష",
                 close: "మూసివేయి",
                 thinking: "🤖 AI ఆలోచిస్తోంది...",
@@ -1332,13 +1379,13 @@
                 stopBotResponseButtonText: "బాట్ మాట్లాడటం ఆపు"
             },
             ml: {
-                welcome: "🇮🇳 സ്വാതന്ത്ര്യദിനാശംസകൾ! ഞാൻ ഇൻഡിക്കോർ AI, നിങ്ങളുടെ ബഹുഭാഷാ AI സഹായിയാണ്. ആവശ്യമുള്ള ഭാഷ തിരഞ്ഞെടുക്കാൻ ക്രമീകരണങ്ങൾ തുറക്കുക.",
+                welcome: "🕉️ ഗണേശ ചതുർത്ഥി ആശംസകൾ! ഗണപതി ഭഗവാൻ നിങ്ങൾക്ക് ജ്ഞാനവും സമൃദ്ധിയും സൗഭാഗ്യവും നൽകി അനുഗ്രഹിക്കട്ടെ. നിങ്ങളുടെ ഇഷ്ട ഭാഷയിൽ എന്നോട് എന്തും ചോദിക്കാം.",
                 settings: "ക്രമീകരണങ്ങൾ",
                 model: "AI മോഡൽ",
                 systemPrompt: "സിസ്റ്റം പ്രോംപ്റ്റ്",
                 inputPlaceholder: "നിങ്ങളുടെ സന്ദേശം ഇവിടെ ടൈപ്പ് ചെയ്യുക...",
                 send: "അയയ്ക്കുക",
-                powered: "എല്ലാ ഇന്ത്യൻ ഭാഷകളിലും സ്വാതന്ത്ര്യം ആഘോഷിക്കുന്നു",
+                powered: "നിങ്ങൾക്ക് സന്തോഷവും സമൃദ്ധിയും അനുഗ്രഹങ്ങളും നേരുന്നു!",
                 language: "ഭാഷ",
                 close: "അടയ്ക്കുക",
                 thinking: "🤖 AI ചിന്തിക്കുന്നു...",
@@ -1359,14 +1406,14 @@
                 stopBotResponseButtonText: "ബോട്ട് സംസാരിക്കുന്നത് നിർത്തുക"
             },
             kn: {
-                welcome: "🇮🇳 ಸ್ವಾತಂತ್ರ್ಯ ದಿನಾಚರಣೆಯ ಶುಭಾಶಯಗಳು! ನಾನು ಇಂಡಿಕೋರ್ AI, ನಿಮ್ಮ ಬಹುಭಾಷಾ AI ಸಹಾಯಕ. ಬಯಸಿದ ಭಾಷೆಯನ್ನು ಆಯ್ಕೆ ಮಾಡಲು ಸೆಟ್ಟಿಂಗ್ಸ್ ತೆರೆಯಿರಿ.",
+                welcome: "🕉️ ಗಣೇಶ ಚತುರ್ಥಿಯ ಹಾರ್ದಿಕ ಶುಭಾಶಯಗಳು! ಗಣೇಶ ದೇವರು ನಿಮಗೆ ಜ್ಞಾನ, ಸಮೃದ್ಧಿ ಮತ್ತು ಅದೃಷ್ಟವನ್ನು ನೀಡಿ ಆಶೀರ್ವದಿಸಲಿ. ನಿಮ್ಮ ಆದ್ಯತೆಯ ಭಾಷೆಯಲ್ಲಿ ನನ್ನನ್ನು ಏನು ಬೇಕಾದರೂ ಕೇಳಿ.",
                 settings: "ಸೆಟ್ಟಿಂಗ್ಸ್",
                 model: "AI ಮಾದರಿ",
                 systemPrompt: "ಸಿಸ್ಟಮ್ ಪ್ರಾಂಪ್ಟ್",
                 inputPlaceholder: "ನಿಮ್ಮ ಸಂದೇಶವನ್ನು ಇಲ್ಲಿ ಟೈಪ್ ಮಾಡಿ...",
                 send: "ಕಳುಹಿಸಿ",
-                powered: "ಪ್ರತಿ ಭಾರತೀಯ ಭಾಷೆಯಲ್ಲಿ ಸ್ವಾತಂತ್ರ್ಯದ ಸಂಭ್ರಮ",
-                language: "ಭಾಷೆ",
+                powered: "ನಿಮಗೆ ಸಂತೋಷ, ಸಮೃದ್ಧಿ ಮತ್ತು ಆಶೀರ್ವಾದಗಳನ್ನು ಕೋರುತ್ತೇನೆ!",
+                language: "ಭಾഷೆ",
                 close: "ಮುಚ್ಚಿ",
                 thinking: "🤖 AI ಯೋಚಿಸುತ್ತಿದೆ...",
                 languageName: "Kannada",
@@ -1403,16 +1450,16 @@
 
         // Azure Speech Synthesis Voice Mapping
         const azureVoiceMap = {
-             'en': 'en-IN-NeerjaNeural', // English (India) - Female
-             'hi': 'hi-IN-MadhurNeural', // Hindi (India) - Male
-             'mr': 'mr-IN-AarohiNeural', // Marathi (India) - Female
-             'ta': 'ta-IN-PallaviNeural', // Tamil (India) - Male
-             'bn': 'bn-IN-TanishaaNeural', // Bengali (India) - Female
-             'pa': 'pa-IN-OjasNeural', // Punjabi (India) - Female
-             'gu': 'gu-IN-NiranjanNeural', // Gujarati (India) - Female
-             'te': 'te-IN-MohanNeural', // Telugu (India) - Female
-             'ml': 'ml-IN-MidhunNeural', // Malayalam (India) - Female
-             'kn': 'kn-IN-GaganNeural' // Kannada (India) - Male
+              'en': 'en-IN-NeerjaNeural', // English (India) - Female
+              'hi': 'hi-IN-MadhurNeural', // Hindi (India) - Male
+              'mr': 'mr-IN-AarohiNeural', // Marathi (India) - Female
+              'ta': 'ta-IN-PallaviNeural', // Tamil (India) - Male
+              'bn': 'bn-IN-TanishaaNeural', // Bengali (India) - Female
+              'pa': 'pa-IN-OjasNeural', // Punjabi (India) - Female
+              'gu': 'gu-IN-NiranjanNeural', // Gujarati (India) - Female
+              'te': 'te-IN-MohanNeural', // Telugu (India) - Female
+              'ml': 'ml-IN-MidhunNeural', // Malayalam (India) - Female
+              'kn': 'kn-IN-GaganNeural' // Kannada (India) - Male
         };
 
         // Model descriptions
@@ -1902,7 +1949,7 @@
         function updateWelcomeMessage(lang) {
             const messagesContainer = document.getElementById('messages');
             if (messagesContainer.children.length === 0 ||
-                (messagesContainer.children.length === 1 && (messagesContainer.children[0].textContent.includes("Welcome!") || messagesContainer.children[0].textContent.includes("Day!")))) {
+                (messagesContainer.children.length === 1 && (messagesContainer.children[0].textContent.includes("Welcome!") || messagesContainer.children[0].textContent.includes("Day!") || messagesContainer.children[0].textContent.includes("Chaturthi!")))) {
                 messagesContainer.innerHTML = '';
                 addMessage(translations[lang].welcome, false);
             }
